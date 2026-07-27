@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سوق كاشي للتسوق المتكامل</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --bg-main: #0b0f19;
+            --card-bg: #151c2c;
+            --bg-card: #151c2c;
+            --text-color: #ffffff;
+            --text-muted: #a0aec0;
+            --gold-glow: linear-gradient(90deg, #d4af37, #f3e5ab, #aa771c, #f3e5ab, #d4af37);
+            --gold-color: #bf953f;
+            --gold-gradient: linear-gradient(90deg, #d4af37, #f3e5ab, #aa771c, #f3e5ab, #d4af37);
+            --green-support: #10b981; 
+            --green-sharia: #10b981;
+            --purple-box: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --neon-blue: #00c6ff;
+            --nav-bg: rgba(21, 28, 44, 0.96);
+            --input-bg: #1f293d;
+            --app-bg: #0e1422;
+        }
+
+        /* الثيم الفاتح (Light Mode) */
+        body.light-theme {
+            --bg-color: #e2e8f0;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --bg-card: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --nav-bg: rgba(255, 255, 255, 0.96);
+            --input-bg: #f1f5f9;
+            --app-bg: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #a832d7 0%, #e04886 50%, #f16d55 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+            overflow: hidden;
+        }
+        
+        #splash-screen img {
+            max-width: 85%;
+            max-height: 85%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            object-position: center;
+            transform: scale(0.85);
+            background-color: transparent;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--app-bg);
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; 
+            margin-bottom: 5px;
+            position: relative;
+            padding: 10px 20px 5px 20px;
+            min-height: 50px;
+            flex-shrink: 0;
+            border-bottom: 1px solid rgba(150,150,150,0.15);
+        }
+
+        .support-btn {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        .support-btn:hover { transform: scale(1.08); }
+        .support-btn svg { width: 26px; height: 26px; fill: var(--green-support); filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.5)); }
+        .support-btn p { font-size: 8px; color: var(--text-muted); margin-top: 1px; }
+
+        .notification-bell-btn {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            position: relative;
+        }
+        .notification-bell-btn:hover { transform: scale(1.08); }
+        .notification-bell-btn svg { width: 26px; height: 26px; fill: #ffcc00; filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.6)); }
+        .notification-bell-btn p { font-size: 8px; color: var(--text-muted); margin-top: 1px; }
+        
+        .bell-badge {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            display: none;
+            box-shadow: 0 0 6px #ef4444;
+        }
+
+        .header-brand-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--gold-glow);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldAnimation 4s ease infinite;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+            letter-spacing: 0.5px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes goldAnimation {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        .form-content-block {
+            padding: 10px 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid rgba(150,150,150,0.2);
+            border-radius: 12px;
+            padding: 0 12px;
+            transition: 0.3s;
+        }
+        .input-wrapper:focus-within {
+            border-color: #0072ff;
+            box-shadow: 0 0 10px rgba(0,114,255,0.3);
+        }
+
+        .country-select {
+            background: transparent;
+            color: var(--text-color);
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding-left: 8px;
+            margin-left: 8px;
+            border-left: 1px solid rgba(150,150,150,0.3);
+            cursor: pointer;
+        }
+        .country-select option { background: var(--bg-card); color: var(--text-color); }
+
+        .input-wrapper input {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            width: 100%;
+            padding: 14px 0;
+            font-size: 16px;
+            outline: none;
+        }
+        .input-wrapper input::placeholder { color: var(--text-muted); }
+
+        .toggle-password { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; padding: 0 5px; }
+        .toggle-password svg { width: 22px; height: 22px; fill: #718096; transition: fill 0.2s; }
+        .toggle-password:hover svg { fill: var(--neon-blue); }
+
+        .password-strength { font-size: 11px; color: #e53e3e; margin-top: 4px; display: none; }
+        .sms-container { display: flex; gap: 10px; }
+        .sms-input-wrapper { flex: 2; }
+
+        .captcha-box {
+            background: linear-gradient(45deg, #1f293d, #2d3748);
+            color: #ffcc00;
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 5px;
+            text-shadow: 0 0 8px rgba(255,204,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            user-select: none;
+        }
+
+        .terms-container { display: flex; align-items: center; gap: 8px; margin: 15px 0; font-size: 13px; color: var(--text-color); }
+
+        .action-btn {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            border: none; border-radius: 12px; color: white; cursor: pointer;
+            width: 100%; padding: 15px; font-size: 16px; font-weight: 700;
+            position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4); transition: 0.3s;
+        }
+        .action-btn::after {
+            content: ''; position: absolute; top: -50%; left: -100%; width: 40%; height: 200%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg); animation: slowWave 7s infinite linear; 
+        }
+        @keyframes slowWave { 0% { left: -100%; } 100% { left: 150%; } }
+        .action-btn:hover { box-shadow: 0 6px 20px rgba(0, 114, 255, 0.6); transform: translateY(-2px); }
+
+        .switch-link { text-align: center; margin-top: 15px; font-size: 14px; color: var(--text-muted); }
+        .switch-link span { color: #00c6ff; cursor: pointer; text-decoration: underline; font-weight: 600; }
+        .forgot-link { display: block; text-align: left; margin-top: 8px; font-size: 12px; color: #ef4444; cursor: pointer; text-decoration: none; }
+
+        .shop-search-bar { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; width: 100%; }
+        .search-input { width: 100%; background: var(--bg-card); border: 1px solid rgba(150,150,150,0.2); padding: 10px 12px; border-radius: 12px; color: var(--text-color); outline: none; font-size: 13px; }
+        .shop-actions-container { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .shop-info-btn { width: 100%; background: rgba(0, 198, 255, 0.15); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 12px; border-radius: 12px; cursor: pointer; font-size: 12px; font-weight: 700; white-space: nowrap; display: flex; align-items: center; justify-content: center; }
+
+        .categories-grid-new { display: flex; gap: 10px; margin-bottom: 20px; }
+        .cat-btn-new { flex: 1; background: var(--bg-card); padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid rgba(150,150,150,0.2); text-align: center; color: var(--text-color); transition: all 0.3s; }
+        .cat-btn-new.active-cat { background: var(--neon-blue); color: #000; border-color: var(--neon-blue); }
+
+        .products-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 20px; }
+        .product-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; border: 1px solid rgba(150,150,150,0.15); display: flex; flex-direction: column; }
+        .product-img { width: 100%; height: 110px; background: #252f44; object-fit: cover; }
+        .product-info { padding: 10px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+        .product-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
+        .product-price { color: var(--neon-blue); font-weight: 800; font-size: 14px; margin-bottom: 8px; }
+        .buy-btn { background: var(--green-sharia); color: white; border: none; padding: 6px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; width: 100%; margin-bottom: 5px; }
+        .prod-details-btn { background: #2d3748; color: white; border: none; padding: 6px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 11px; width: 100%; }
+
+        .add-to-cart-btn { background: #ef4444; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 13px; width: 100%; margin-top: 8px; transition: 0.2s; }
+        .add-to-cart-btn:hover { background: #dc2626; }
+
+        .category-list-container { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
+        .category-list-item { background: var(--input-bg); padding: 15px; border-radius: 12px; color: var(--text-color); font-weight: bold; border-right: 4px solid var(--gold-color); cursor: pointer; transition: 0.2s; text-align: right; }
+        .category-list-item:hover { background: #2d3748; border-right-color: var(--neon-blue); transform: translateX(-3px); }
+
+        .chat-header-status { display: flex; flex-direction: column; justify-content: center; padding: 8px 12px; background: rgba(150, 150, 150, 0.05); border-bottom: 1px solid rgba(150,150,150,0.1); font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
+        .connection-status { display: flex; align-items: center; gap: 6px; font-weight: 700; color: var(--text-color); }
+        .green-dot { width: 8px; height: 8px; background-color: var(--green-support); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--green-support); animation: pulseDot 1.5s infinite; }
+        @keyframes pulseDot { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        
+        .typing-indicator { font-weight: 700; color: var(--neon-blue); display: none; animation: pulseGlowBlue 1.2s infinite ease-in-out; font-size: 11px; filter: drop-shadow(0 0 5px var(--neon-blue)); margin-top: 2px; }
+        @keyframes pulseGlowBlue { 0%, 100% { opacity: 0.5; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1.02); } }
+
+        #page-support { display: none; padding: 0 !important; flex-direction: column; height: 100% !important; width: 100% !important; box-sizing: border-box; flex: 1; overflow: hidden !important; }
+        #page-support.active { display: flex !important; }
+        .chat-container { background: var(--bg-card); border-radius: 0px; flex: 1; display: flex; flex-direction: column; border: none; overflow: hidden; height: 100%; width: 100%; padding-bottom: 90px; transition: padding-bottom 0.2s ease; }
+        
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; font-size: 14px; display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        
+        .msg-bubble { max-width: 75%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word; display: flex; flex-direction: column; position: relative; }
+        .msg-bubble.user { align-self: flex-start; background: #1e293b; color: #fff; border-bottom-right-radius: 2px; border: 1px solid rgba(0, 198, 255, 0.2); text-align: right; }
+        .msg-bubble.admin { align-self: flex-end; background: #2d3748; color: #fff; border-bottom-left-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: right; }
+        .msg-meta { display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+        .tick-mark { color: #ef4444; font-weight: bold; font-size: 12px; }
+
+        .chat-input-area { padding: 8px 10px; border-top: 1px solid rgba(150,150,150,0.15); display: flex; gap: 6px; align-items: center; background: var(--bg-card); position: relative; z-index: 10; width: 100%; flex-shrink: 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.2); }
+        .chat-input { flex: 1; background: var(--input-bg); border: 1px solid rgba(150,150,150,0.2); padding: 6px 12px; border-radius: 8px; color: var(--text-color); outline: none; font-size: 13px; height: 38px; transition: 0.2s border-color; }
+        .chat-input:focus { border-color: var(--neon-blue); }
+        
+        .upload-btn { display: flex; align-items: center; justify-content: center; cursor: pointer; width: 38px; height: 38px; background: var(--input-bg); border: 1px solid rgba(150,150,150,0.2); border-radius: 8px; transition: 0.2s; flex-shrink: 0; }
+        .upload-btn:hover { border-color: var(--neon-blue); background: rgba(0, 198, 255, 0.1); }
+        .upload-btn svg { width: 20px !important; height: 20px !important; }
+        .upload-btn span { display: none; }
+        
+        .send-msg-btn { background: var(--neon-blue); border: none; color: #000; width: 38px; height: 38px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.2s; }
+        .send-msg-btn:hover { background: #00b4e6; transform: translateY(-1px); }
+        .send-msg-btn svg { width: 16px; height: 16px; fill: #000; }
+
+        .verified-badge { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; background-color: #1877f2; color: #fff; border-radius: 50%; margin-right: 6px; }
+        .verified-badge svg { width: 10px; height: 10px; fill: #fff; }
+
+        .form-control { background: var(--input-bg); border: 1px solid rgba(150,150,150,0.2); padding: 14px; border-radius: 12px; color: var(--text-color); width: 100%; margin-bottom: 15px; outline: none; font-size: 15px; }
+
+        .sub-page { position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateY(100%); width: 100%; max-width: 450px; height: 100vh; background: var(--bg-main); z-index: 9999; padding: 20px 20px 100px 20px; overflow-y: auto; transition: transform 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); }
+        .sub-page.open { transform: translateX(-50%) translateY(0); }
+        .sub-page-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid rgba(150,150,150,0.15); padding-bottom: 15px; }
+        .back-btn { background: var(--bg-card); border: none; color: var(--text-color); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; }
+
+        .first-time-popup { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 450px; height: 100vh; background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(8px); z-index: 20000; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .popup-card { background: var(--bg-card); border-radius: 24px; padding: 25px; text-align: center; border: 2px solid var(--neon-blue); box-shadow: 0 0 30px rgba(0, 198, 255, 0.3); }
+        .understand-btn { background: var(--green-sharia); color: white; border: none; padding: 12px 35px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; }
+
+        .logout-btn { background: #ef4444; color: white; width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 30px; }
+        .img-grid-shop { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding-bottom: 10px; }
+        .img-grid-shop img { width: 110px; height: 110px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 1px solid rgba(150,150,150,0.2); transition: 0.2s; flex-shrink: 0; }
+        .img-grid-shop img:hover { transform: scale(1.05); border-color: var(--neon-blue); }
+        
+        .hidden-el { display: none !important; }
+        .hidden { display: none !important; }
+        
+        /* أزرار الإعدادات داخل الحساب */
+        .profile-option-btn {
+            background: var(--bg-card);
+            border: 1px solid rgba(150,150,150,0.2);
+            padding: 14px;
+            border-radius: 12px;
+            color: var(--text-color);
+            width: 100%;
+            margin-top: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            text-align: right;
+            transition: 0.2s;
+        }
+        .profile-option-btn:hover {
+            border-color: var(--neon-blue);
+        }
+        .profile-option-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .profile-option-subtitle {
+            font-size: 12px;
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+
+        /* شريط التنقل السفلي - تم رفعه وتنسيقه بشكل مميز */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: calc(35px + env(safe-area-inset-bottom, 0px)); 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: calc(100% - 24px); 
+            max-width: 426px; 
+            height: 64px; 
+            background: var(--nav-bg); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(150,150,150,0.2); 
+            border-radius: 20px;
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            z-index: 10000 !important; 
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, background 0.3s; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .nav-item { text-align: center; color: var(--text-muted); cursor: pointer; transition: 0.3s; flex: 1; padding: 6px 0; }
+        .nav-item.active { color: var(--neon-blue); }
+        .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
+        .nav-item p { font-size: 10px; margin-top: 2px; font-weight: 600; }
+
+        .page { display: none; padding: 20px 20px 130px 20px; flex: 1; overflow-y: auto !important; height: calc(100vh - 65px) !important; -webkit-overflow-scrolling: touch; pointer-events: none; opacity: 0; transform: translateY(10px); transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .page.active { display: block; pointer-events: auto; opacity: 1; transform: translateY(0); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 15000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-card { background: var(--bg-card); border-radius: 20px; padding: 25px; width: 90%; max-width: 400px; text-align: center; border: 1px solid rgba(150,150,150,0.2); }
+        .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; color: var(--neon-blue); }
+        .modal-text { font-size: 14px; color: var(--text-color); margin-bottom: 20px; line-height: 1.6; }
+        .email-box { background: var(--input-bg); padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .email-text { font-size: 14px; font-weight: 600; color: var(--text-color); }
+        .copy-icon-btn { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; }
+        .copy-icon-btn svg { width: 20px; height: 20px; fill: var(--neon-blue); }
+        .modal-close-btn { background: #2d3748; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
+        
+        .broadcast-card-item {
+            background: rgba(150, 150, 150, 0.05);
+            border-right: 4px solid #ffcc00;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+        .broadcast-card-item img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        .broadcast-time {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            display: block;
+        }
+
+        .logout-confirm-btn { background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; margin-left: 10px; }
+        .logout-cancel-btn { background: #2d3748; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
+        
+        #viewer-img { max-width: 90%; max-height: 80vh; border-radius: 12px; border: 2px solid var(--neon-blue); }
+
+        .luxury-modal { border: 2px solid var(--neon-blue); box-shadow: 0 0 25px rgba(0, 198, 255, 0.4); animation: modalGlowPulse 2s infinite ease-in-out; }
+        @keyframes modalGlowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.3); } 50% { box-shadow: 0 0 35px rgba(0, 198, 255, 0.6); } }
+        .luxury-modal-btn { background: linear-gradient(45deg, #00c6ff, #0072ff); color: #fff; font-weight: bold; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .luxury-modal-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4); }
+        
+        .order-field-label { display: block; font-size: 14px; font-weight: bold; color: var(--text-muted); margin-bottom: 6px; margin-top: 15px; }
+        .shop-detail-card { background: var(--bg-card); border-radius: 16px; padding: 25px; border: 1px solid rgba(150, 150, 150, 0.15); margin-top: 20px; line-height: 1.8; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
+        .cart-item-card { background: var(--bg-card); border-radius: 12px; padding: 12px; border: 1px solid rgba(150,150,150,0.15); display: flex; gap: 12px; align-items: center; }
+        .cart-item-img { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; }
+        .cart-item-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .cart-btn-group { display: flex; gap: 6px; margin-top: 6px; }
+        .cart-buy-btn { background: var(--green-sharia); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        .cart-delete-btn { background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        
+        .framed-notice {
+            border: 2px dashed var(--neon-blue);
+            background: rgba(0, 198, 255, 0.08);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-color);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.15);
+        }
+
+        #offline-banner {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 420px;
+            z-index: 100000;
+            background: rgba(239, 68, 68, 0.95);
+            border: 2px dashed #ffffff;
+            border-radius: 14px;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+            display: none;
+            animation: fadeInDown 0.4s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translate(-50%, -20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- شريط انقطاع الإنترنت المتبروز -->
+<div id="offline-banner">
+    ⚠️ لايوجد اتصال بالانترنت حاول مره اخري
+</div>
+
+<div class="modal-overlay" id="luxury-alert-modal">
+    <div class="modal-card luxury-modal">
+        <div class="modal-title" id="luxury-modal-title">تنبيه آمن</div>
+        <div class="modal-text" id="luxury-modal-text">تمت العملية بنجاح.</div>
+        <button class="luxury-modal-btn" id="luxury-modal-ok-btn" onclick="closeLuxuryModal()">موافق</button>
+    </div>
+</div>
+
+<div class="first-time-popup hidden-el" id="first-shop-popup">
+    <div class="popup-card">
+        <div class="popup-title">نظام تسوق كاشي الموثوق 🛒</div>
+        <div class="popup-text">عزيزي العميل، الدفع يكون نقداً 100% فقط عند استلام المنتج الحقيقي بيديك وفحصه.</div>
+        <button class="understand-btn" onclick="dismissPopup('first-shop-popup')">فهمت</button>
+    </div>
+</div>
+
+<div id="splash-screen">
+    <img src="https://i.ibb.co/n8wRcynL/Gen-4-Turbo.gif" alt="Splash Screen Logo">
+</div>
+
+<!-- مودال الإشعارات والرسائل العامة -->
+<div class="modal-overlay" id="notifications-modal">
+    <div class="modal-card" style="max-height: 80vh; overflow-y: auto; text-align: right;">
+        <div class="modal-title" style="color: #ffcc00; text-align: center;">الرسائل العامة والتعميمات 🔔</div>
+        <div id="broadcasts-container-list">
+            <div class="modal-text" style="text-align: center; color: var(--text-muted);">جاري تحميل الإعلانات...</div>
+        </div>
+        <button class="modal-close-btn" style="margin-top: 15px; width:100%;" onclick="closeNotifications()">إغلاق</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="support-modal">
+    <div class="modal-card">
+        <div class="modal-title">مركز الدعم الفني</div>
+        <div class="modal-text">إذا واجهتك مشكلة في التسجيل او لديك اي استفسار عن التسوق  ، يرجى مراسلة خدمة العملاء مباشرة عبرالجميل.</div>
+        <div class="email-box">
+            <span class="email-text" id="target-email">nassemfg0@gmail.com</span>
+            <button class="copy-icon-btn" onclick="copyEmailAddress('nassemfg0@gmail.com')"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
+        </div>
+        <button class="modal-close-btn" onclick="closeSupport()">إغلاق الواجهة</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="logout-confirm-modal">
+    <div class="modal-card">
+        <div class="modal-title" style="color:#ef4444;">تأكيد تسجيل الخروج 🚪</div>
+        <div class="modal-text">هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟</div>
+        <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-top:10px;">
+            <button class="logout-confirm-btn" onclick="confirmExitDashboard()">خروج</button>
+            <button class="logout-cancel-btn" onclick="closeLogoutConfirm()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="image-viewer-modal">
+    <div class="modal-card" style="max-width: 430px; background: rgba(11, 15, 25, 0.95); position: relative; padding: 15px;">
+        <img id="viewer-img" src="" alt="المستند أو صور المنتج" style="width:100%; max-height:60vh; object-fit:contain; border-radius:12px;">
+        <p id="viewer-desc-text" style="color:#cbd5e0; font-size:13px; margin-top:15px; line-height:1.6; display:none; text-align:justify; background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; border-right:3px solid var(--neon-blue);"></p>
+        <button class="modal-close-btn" style="margin-top:15px; width:100%;" onclick="closeImageViewer()">إغلاق الصورة</button>
+    </div>
+</div>
+
+<div class="app-container" id="main-app" onclick="handleGlobalClick(event)">
+    
+    <div class="header">
+        <div class="support-btn" id="header-support-btn" onclick="openSupport()">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.21.72 4.25 1.93 5.91C3.84 19.34 5.3 22 8 22h8c2.7 0 4.16-2.66 4.07-4.09C21.28 16.25 22 14.21 22 12c0-5.52-4.48-10-10-10zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 11H6v-.5c0-2 4-3.1 6-3.1s6 1.1 6 3.1v.5z"/></svg>
+            <p data-i18n="support">الدعم الفني</p>
+        </div>
+        
+        <div class="header-brand-center" data-i18n="appTitle">سوق كاشي</div>
+
+        <div class="notification-bell-btn" id="header-bell-btn" onclick="openNotifications()">
+            <span class="bell-badge" id="bell-unread-dot"></span>
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1-1.5-1s-1.5.17-1.5 1v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            <p data-i18n="generalMsgs">الرسائل العامة</p>
+        </div>
+    </div>
+
+    <div id="auth-gate-wrapper" style="display: flex; flex-direction: column; flex: 1; overflow-y: auto;">
+        <!-- تسجيل الدخول -->
+        <div id="login-view" class="form-content-block">
+            <div class="framed-notice">
+                🔑 نظام التحقق المباشر: ادخل رقمك للتحقق التلقائي والدخول للحساب.
+            </div>
+            <div class="form-group">
+                <label>اختر بلدك ورقم الهاتف</label>
+                <div class="input-wrapper">
+                    <select class="country-select" id="login-country-select">
+                        <option value="+20">🇪🇬 مصر (+20)</option>
+                        <option value="+966">🇸🇦 السعودية (+966)</option>
+                        <option value="+964">🇮🇶 العراق (+964)</option>
+                        <option value="+968">🇴🇲 عمان (+968)</option>
+                        <option value="+971">🇦🇪 الإمارات (+971)</option>
+                    </select>
+                    <input type="tel" id="login-phone" placeholder="1023456789" maxlength="15" oninput="autoCheckPhoneStatus('login')">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <div class="input-wrapper">
+                    <input type="password" id="login-pass" placeholder="••••••••">
+                    <button class="toggle-password" type="button" onclick="togglePasswordVisibility('login-pass', this)">
+                        <svg viewBox="0 0 24 24" class="eye-icon"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    </button>
+                </div>
+                <a class="forgot-link" onclick="showForgotView()">هل نسيت كلمة السر اضغط هنا ؟</a>
+            </div>
+            <button class="action-btn" id="login-submit-btn" onclick="submitLogin()">الدخول الآن</button>
+            <div class="switch-link">ليس لديك حساب بعد؟ <span onclick="showSignupView()">اضغط لإنشاء حساب</span></div>
+        </div>
+
+        <!-- إنشاء حساب جديد -->
+        <div id="signup-view" class="form-content-block hidden">
+            <div class="framed-notice">
+                ✨ أهلاً بك! الرقم المدخل جديد، يرجى استكمال بياناتك لإنشاء الحساب.
+            </div>
+            <div class="form-group">
+                <label>اختر بلدك ورقم الهاتف الموثق</label>
+                <div class="input-wrapper">
+                    <select class="country-select" id="signup-country-select">
+                        <option value="+20">🇪🇬 مصر (+20)</option>
+                        <option value="+966">🇸🇦 السعودية (+966)</option>
+                        <option value="+964">🇮🇶 العراق (+964)</option>
+                        <option value="+968">🇴🇲 عمان (+968)</option>
+                        <option value="+971">🇦🇪 الإمارات (+971)</option>
+                    </select>
+                    <input type="tel" id="signup-phone" placeholder="1023456789" maxlength="15" oninput="autoCheckPhoneStatus('signup')">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <div class="input-wrapper">
+                    <input type="password" id="signup-pass" placeholder="••••••••" oninput="validatePassword(this)">
+                    <button class="toggle-password" type="button" onclick="togglePasswordVisibility('signup-pass', this)">
+                        <svg viewBox="0 0 24 24" class="eye-icon"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    </button>
+                </div>
+                <div id="pass-error" class="password-strength">يجب أن تحتوي على حروف كبيرة ورموز وأرقام!</div>
+            </div>
+            <div class="form-group">
+                <label>أدخل رمز كابتشا الأمني الموضح</label>
+                <div class="sms-container">
+                    <div class="input-wrapper sms-input-wrapper">
+                        <input type="text" id="signup-captcha-input" placeholder="اكتب الرمز الموضح">
+                    </div>
+                    <div class="captcha-box" id="captcha-code-display" style="flex:1; height: 50px;">0000</div>
+                </div>
+            </div>
+            <div class="terms-container">
+                <input type="checkbox" id="signup-terms">
+                <label for="signup-terms">أوافق بالكامل على شروط كاشي</label>
+            </div>
+            <button class="action-btn" id="signup-submit-btn" onclick="submitSignup()">إنشاء الحساب الآن</button>
+            <div class="switch-link">هل لديك حساب بالفعل؟ <span onclick="showLoginView()">سجل الدخول الآن</span></div>
+        </div>
+
+        <!-- استعادة كلمة المرور -->
+        <div id="forgot-view" class="form-content-block hidden">
+            <div class="framed-notice" style="border-color: #ef4444; background: rgba(239, 68, 68, 0.08);">
+                🔐 إعادة تعيين كلمة المرور: تم التوجيه المباشر لتغيير كلمة السر.
+            </div>
+            <div class="form-group">
+                <label>اختر بلدك ورقم الهاتف المسجل سابقاً</label>
+                <div class="input-wrapper">
+                    <select class="country-select" id="forgot-country-select">
+                        <option value="+20">🇪🇬 مصر (+20)</option>
+                        <option value="+966">🇸🇦 السعودية (+966)</option>
+                        <option value="+964">🇮🇶 العراق (+964)</option>
+                        <option value="+968">🇴🇲 عمان (+968)</option>
+                        <option value="+971">🇦🇪 الإمارات (+971)</option>
+                    </select>
+                    <input type="tel" id="forgot-phone" placeholder="1023456789" maxlength="15">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>أدخل رمز كابتشا الأمني</label>
+                <div class="sms-container">
+                    <div class="input-wrapper sms-input-wrapper">
+                        <input type="text" id="forgot-captcha-input" placeholder="اكتب الرمز">
+                    </div>
+                    <div class="captcha-box" id="forgot-captcha-display" style="flex:1; height: 50px;">0000</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>كلمة السر الجديدة</label>
+                <div class="input-wrapper">
+                    <input type="password" id="forgot-new-pass" placeholder="••••••••">
+                    <button class="toggle-password" type="button" onclick="togglePasswordVisibility('forgot-new-pass', this)">
+                        <svg viewBox="0 0 24 24" class="eye-icon"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <button class="action-btn" id="forgot-submit-btn" onclick="submitForgot()">حفظ وتحديث كلمة المرور</button>
+            <div class="switch-link">العودة إلى <span onclick="showLoginView()">تسجيل الدخول</span></div>
+        </div>
+    </div>
+
+    <!-- لوحة القيادة والتبويبات الرئيسية -->
+    <div id="app-dashboard" class="hidden" style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+        
+        <!-- صفحة التسوق الرئيسية -->
+        <div id="page-shop" class="page active">
+            <div class="shop-search-bar">
+                <input type="text" id="shop-search-input" class="search-input" placeholder="ابحث عن منتجك المفضّل..." oninput="searchProducts(this.value)" data-i18n-placeholder="searchPlaceholder">
+                <div class="shop-actions-container">
+                    <button class="shop-info-btn" onclick="openSubPage('sub-shop-details-info')" data-i18n="shoppingDetails">تفاصيل التسوق ℹ️</button>
+                </div>
+            </div>
+            
+            <div class="categories-grid-new">
+                <div class="cat-btn-new active-cat" onclick="openSubPage('sub-categories-list-page')" data-i18n="catProducts">📁 تصنيف المنتجات</div>
+                <div class="cat-btn-new" onclick="filterCategory('all')" data-i18n="allProducts">جميع الخدمات والمنتجات</div>
+            </div>
+
+            <div class="products-container" id="products-wrapper"></div>
+        </div>
+
+        <!-- صفحة العربة -->
+        <div id="page-cart" class="page">
+            <h3 style="margin-bottom:20px;" data-i18n="cartTitle">عربة التسوق الخاصة بك</h3>
+            <div id="cart-items-container" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="background:var(--bg-card); padding:15px; border-radius:12px; text-align: center; color: var(--text-muted);" data-i18n="cartEmpty">
+                    عربتك فارغة حالياً. تصفح قسم التسوق وأضف منتجاتك.
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة طلباتك -->
+        <div id="page-orders" class="page">
+            <h3 style="margin-bottom:20px;" data-i18n="ordersTitle">طلبات الشراء الخاصة بك</h3>
+            <div id="orders-list-box" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="background:var(--bg-card); padding:15px; border-radius:12px; text-align: center; color: var(--text-muted);" id="empty-orders-msg" data-i18n="noOrders">
+                    لا توجد طلبات شراء معلّقة حالياً.
+                </div>
+            </div>
+        </div>
+
+        <!-- واجهة الدعم الفني -->
+        <div id="page-support" class="page">
+            <div class="chat-container" id="chat-container-el">
+                <div class="chat-header-status">
+                    <div class="connection-status">
+                        <span class="green-dot"></span>
+                        <span data-i18n="onlineNow">متصل الآن</span>
+                    </div>
+                    <div class="typing-indicator" id="chat-typing-status">✍️ الأدمن يكتب الآن...</div>
+                </div>
+
+                <div class="chat-messages" id="chat-box">
+                    <div class="msg-bubble admin" data-i18n="welcomeSupport">
+                        مرحباً بك! فريق خدمة عملاء كاشي متواجد لمساعدتك الآن. أرسل استفسارك.
+                    </div>
+                </div>
+                
+                <div class="chat-input-area" id="support-input-bar">
+                    <label class="upload-btn" title="إرفاق صورة">
+                        <svg viewBox="0 0 24 24" style="fill:#00c6ff;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        <input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="sendChatImage(this)">
+                    </label>
+                    <input type="text" id="chat-msg-input" class="chat-input" placeholder="اكتب مشكلتك هنا..." onfocus="hideBottomNav()" oninput="reportUserTypingStatus()" onkeypress="handleKeyPress(event)" data-i18n-placeholder="chatPlaceholder">
+                    <button class="send-msg-btn" id="send-chat-btn" onclick="sendChatMessage()">
+                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الملف الشخصي -->
+        <div id="page-profile" class="page">
+            <h3 style="margin-bottom:20px;" data-i18n="accountTitle">حسابك</h3>
+            <div style="background:var(--bg-card); padding:20px; border-radius:16px; border:1px solid rgba(150,150,150,0.15);">
+                <div style="display:flex; align-items:center; gap:10px; font-size:18px; font-weight:700; flex-wrap: wrap;">
+                    <span id="profile-phone-display">+20 1097864352</span>
+                    <button class="copy-icon-btn" onclick="copyProfilePhone()"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
+                    <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>
+                </div>
+            </div>
+
+            <!-- زرار اختيار الوضع المفضل لديك -->
+            <button class="profile-option-btn" onclick="toggleThemeMode()">
+                <span class="profile-option-title" data-i18n="themeBtnTitle">اختيار الوضع المفضل لديك 🌙/☀️</span>
+                <span class="profile-option-subtitle" id="theme-status-text" data-i18n="modeDark">الداكن</span>
+            </button>
+
+            <!-- زرار اختيار اللغة -->
+            <button class="profile-option-btn" onclick="toggleLanguage()">
+                <span class="profile-option-title" data-i18n="langBtnTitle">اختيار اللغة 🌐</span>
+                <span class="profile-option-subtitle" id="lang-status-text">العربية</span>
+            </button>
+
+            <button class="logout-btn" onclick="askExitDashboard()" data-i18n="logout">تسجيل الخروج من الحساب</button>
+        </div>
+
+        <!-- شريط التنقل السفلي المرفوع والمتناسق -->
+        <div class="bottom-nav" id="bottom-nav-el">
+            <div class="nav-item active" id="nav-btn-shop" onclick="switchTab('page-shop', this)">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 12H4V8h16v8z"/></svg>
+                <p data-i18n="tabShop">التسوق</p>
+            </div>
+            <div class="nav-item" id="nav-btn-cart" onclick="switchTab('page-cart', this)">
+                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <p data-i18n="tabCart">العربة</p>
+            </div>
+            <div class="nav-item" id="nav-btn-orders" onclick="switchTab('page-orders', this)">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <p data-i18n="tabOrders">طلباتك</p>
+            </div>
+            <div class="nav-item" id="nav-btn-support" onclick="switchTab('page-support', this)">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                <p data-i18n="tabSupport">الدعم</p>
+            </div>
+            <div class="nav-item" id="nav-btn-profile" onclick="switchTab('page-profile', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                <p data-i18n="tabAccount">الحساب</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- الواجهات الفرعية -->
+<div class="sub-page" id="sub-shop-details-info">
+    <div class="sub-page-header">
+        <button class="back-btn" onclick="closeSubPage('sub-shop-details-info')">رجوع ↩</button>
+        <h2>تفاصيل التسوق والشحن</h2>
+    </div>
+    <div class="shop-detail-card">
+        <p style="font-size: 15px; color: var(--text-color); text-align: justify;">
+            حضرتك بتطلب المنتج اللي هيعجبك وتأكد الشراء، والدفع عند استلام المنتج لحد باب بيتك. هتستلم منتجك الأول وماتشيلش هم الدفع لما المنتج يجيلك لحد عندك. خدمة عملاء كاشي هتتواصل معاك عبر الهاتف لتأكيد طلبك خلال يومين عمل، شكراً.
+        </p>
+        <p style="margin-top: 25px; text-align: left; font-weight: 900; color: var(--gold-color); font-size: 14px;">
+            المدير التنفيذي: كاشي للتسوق 💼
+        </p>
+    </div>
+</div>
+
+<div class="sub-page" id="sub-categories-list-page">
+    <div class="sub-page-header">
+        <button class="back-btn" onclick="closeSubPage('sub-categories-list-page')">رجوع ↩</button>
+        <h2>تصنيف المنتجات</h2>
+    </div>
+    <div class="category-list-container">
+        <div class="category-list-item" onclick="filterCategory('electro')">الالكترونيات</div>
+        <div class="category-list-item" onclick="filterCategory('entertainment')">المنتجات الترفيهية</div>
+        <div class="category-list-item" onclick="filterCategory('clothes')">الملابس</div>
+        <div class="category-list-item" onclick="filterCategory('beauty')">الصحة والجمال</div>
+        <div class="category-list-item" onclick="filterCategory('cars')">مستلزمات السيارات والاكسسوارات</div>
+        <div class="category-list-item" onclick="filterCategory('home')">منازل</div>
+        <div class="category-list-item" onclick="filterCategory('games')">ألعاب</div>
+        <div class="category-list-item" onclick="filterCategory('kids_games')">ألعاب أطفال</div>
+        <div class="category-list-item" onclick="filterCategory('islamic')">منتجات إسلامية</div>
+        <div class="category-list-item" onclick="filterCategory('fashion')">موضه جديدة</div>
+        <div class="category-list-item" onclick="filterCategory('electric_tools')">أدوات كهربائية</div>
+        <div class="category-list-item" onclick="filterCategory('farm_tools')">أدوات زراعية</div>
+        <div class="category-list-item" onclick="filterCategory('hand_tools')">أدوات يدوية</div>
+        <div class="category-list-item" onclick="filterCategory('baby_supplies')">مستلزمات أطفال</div>
+        <div class="category-list-item" onclick="filterCategory('office')">مستلزمات مكاتب</div>
+        <div class="category-list-item" onclick="filterCategory('all')">جميع الخدمات والمنتجات</div>
+    </div>
+</div>
+
+<div class="sub-page" id="sub-product-details-page">
+    <div class="sub-page-header">
+        <button class="back-btn" onclick="closeSubPage('sub-product-details-page')">إغلاق ✖</button>
+        <h2>تفاصيل المنتج</h2>
+    </div>
+    <div style="background: var(--bg-card); padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(150,150,150,0.15);">
+        <h3 id="det-prod-name" style="color: var(--neon-blue); margin-bottom: 10px;">--</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">🖼️ صور المنتج (اضغط على الصورة لتكبيرها):</p>
+        <div class="img-grid-shop" id="det-prod-images-container"></div>
+        <p id="det-prod-desc" style="font-size: 14px; color: var(--text-color); line-height: 1.6; margin-top: 20px; margin-bottom: 15px;">--</p>
+        <p style="font-size: 18px; font-weight: 800; color: var(--green-support);">السعر: <span id="det-prod-price">0</span> ج.م</p>
+        
+        <button class="add-to-cart-btn" id="prod-det-add-cart-btn">🛒 إضافة إلى العربة</button>
+    </div>
+    <button class="action-btn" id="prod-det-buy-btn">شراء الآن</button>
+</div>
+
+<div class="sub-page" id="sub-checkout-new">
+    <div class="sub-page-header">
+        <button class="back-btn" onclick="closeSubPage('sub-checkout-new')">إلغاء ✖</button>
+        <h2>تأكيد عملية الشراء</h2>
+    </div>
+    
+    <div class="warning-text" style="background: rgba(239, 68, 68, 0.15); border-right: 4px solid #ef4444; padding: 15px; border-radius: 12px; font-size: 13px; color: #fca5a5; line-height: 1.6; margin-bottom: 20px; font-weight: bold;">
+        ⚠️ تحذير: تأكد من كتابة البيانات وسطر العنوان كاملاً; عند تأكيد الشراء سوف نتواصل معك في خلال من يومين إلى ثلاثة أيام عمل لتأكيد عملية الشراء.
+    </div>
+
+    <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(150,150,150,0.15);">
+        <p style="font-size: 15px; font-weight: bold; margin-bottom: 5px;">المنتج: <span id="checkout-new-name" style="color: var(--neon-blue);">--</span></p>
+        <p style="font-size: 15px; font-weight: bold;">الإجمالي: <span id="checkout-new-price" style="color: var(--green-support);">0</span> ج.م</p>
+    </div>
+
+    <div class="form-group">
+        <label class="order-field-label">الاسم الرباعي</label>
+        <input type="text" id="order-user-name" class="form-control" placeholder="أدخل اسمك الكامل">
+    </div>
+
+    <div class="form-group">
+        <label class="order-field-label">رقم الهاتف</label>
+        <input type="tel" id="order-user-phone" class="form-control" placeholder="01xxxxxxxxx">
+    </div>
+
+    <div class="form-group">
+        <label class="order-field-label">العنوان التفصيلي ومحل الإقامة 📍</label>
+        <input type="text" id="order-user-address" class="form-control" placeholder="اكتب المحافظة، المدينة، اسم الشارع ورقم المبنى">
+    </div>
+
+    <div class="form-group">
+        <label class="order-field-label">رقم هاتف إضافي (اختياري)</label>
+        <input type="tel" id="order-user-phone-opt" class="form-control" placeholder="01xxxxxxxxx">
+    </div>
+
+    <button class="action-btn" style="background: var(--green-sharia); margin-top: 15px;" id="order-confirm-btn" onclick="confirmAndSendOrder()">تأكيد وإرسال الطلب</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, query, onSnapshot, where } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXIxSFUIrd3GuatYlT5j1Yd-qzil6A0e4",
+      authDomain: "nassem-ffd86.firebaseapp.com",
+      projectId: "nassem-ffd86",
+      storageBucket: "nassem-ffd86.firebasestorage.app",
+      messagingSenderId: "273833327170",
+      appId: "1:273833327170:web:5d1166c4e67543bd0acbdb",
+      measurementId: "G-T6YNGK4QXM"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let currentUserUid = ""; 
+    window.cartItems = [];
+    window.allProductsList = [];
+    let currentSelectedCheckoutItem = null;
+    let userTypingTimeout = null;
+    let autoCheckTimeout = null;
+
+    window.generatedCaptchaCode = "";
+    window.generatedForgotCaptcha = "";
+
+    /* ========================================================
+       إدارة الوضع المفضل (الداكن / الفاتح) واللغات
+    ======================================================== */
+    const translations = {
+        ar: {
+            appTitle: "سوق كاشي",
+            support: "الدعم الفني",
+            generalMsgs: "الرسائل العامة",
+            searchPlaceholder: "ابحث عن منتجك المفضّل...",
+            shoppingDetails: "تفاصيل التسوق ℹ️",
+            catProducts: "📁 تصنيف المنتجات",
+            allProducts: "جميع الخدمات والمنتجات",
+            cartTitle: "عربة التسوق الخاصة بك",
+            cartEmpty: "عربتك فارغة حالياً. تصفح قسم التسوق وأضف منتجاتك.",
+            ordersTitle: "طلبات الشراء الخاصة بك",
+            noOrders: "لا توجد طلبات شراء معلّقة حالياً.",
+            onlineNow: "متصل الآن",
+            welcomeSupport: "مرحباً بك! فريق خدمة عملاء كاشي متواجد لمساعدتك الآن. أرسل استفسارك.",
+            chatPlaceholder: "اكتب مشكلتك هنا...",
+            accountTitle: "حسابك",
+            themeBtnTitle: "اختيار الوضع المفضل لديك 🌙/☀️",
+            modeDark: "الداكن",
+            modeLight: "الأبيض",
+            langBtnTitle: "اختيار اللغة 🌐",
+            logout: "تسجيل الخروج من الحساب",
+            tabShop: "التسوق",
+            tabCart: "العربة",
+            tabOrders: "طلباتك",
+            tabSupport: "الدعم",
+            tabAccount: "الحساب"
+        },
+        en: {
+            appTitle: "Kashy Market",
+            support: "Support",
+            generalMsgs: "Announcements",
+            searchPlaceholder: "Search for your favorite product...",
+            shoppingDetails: "Shopping Details ℹ️",
+            catProducts: "📁 Categories",
+            allProducts: "All Products & Services",
+            cartTitle: "Your Shopping Cart",
+            cartEmpty: "Your cart is currently empty. Browse shop to add products.",
+            ordersTitle: "Your Purchase Orders",
+            noOrders: "No pending orders at the moment.",
+            onlineNow: "Online Now",
+            welcomeSupport: "Welcome! Kashy support team is here to help you. Send your query.",
+            chatPlaceholder: "Type your query here...",
+            accountTitle: "Your Account",
+            themeBtnTitle: "Choose Your Preferred Theme 🌙/☀️",
+            modeDark: "Dark Mode",
+            modeLight: "Light Mode",
+            langBtnTitle: "Choose Language 🌐",
+            logout: "Logout",
+            tabShop: "Shop",
+            tabCart: "Cart",
+            tabOrders: "Orders",
+            tabSupport: "Support",
+            tabAccount: "Account"
+        }
+    };
+
+    let currentLang = localStorage.getItem('kashy_lang') || 'ar';
+    let currentTheme = localStorage.getItem('kashy_theme') || 'dark';
+
+    window.applyTheme = function(theme) {
+        currentTheme = theme;
+        localStorage.setItem('kashy_theme', theme);
+        const themeText = document.getElementById('theme-status-text');
+        
+        if (theme === 'light') {
+            document.body.classList.add('light-theme');
+            if (themeText) themeText.innerText = translations[currentLang].modeLight;
+        } else {
+            document.body.classList.remove('light-theme');
+            if (themeText) themeText.innerText = translations[currentLang].modeDark;
+        }
+    };
+
+    window.toggleThemeMode = function() {
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        window.applyTheme(newTheme);
+    };
+
+    window.applyLanguage = function(lang) {
+        currentLang = lang;
+        localStorage.setItem('kashy_lang', lang);
+        
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                el.innerText = translations[lang][key];
+            }
+        });
+
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                el.placeholder = translations[lang][key];
+            }
+        });
+
+        const langText = document.getElementById('lang-status-text');
+        if (langText) langText.innerText = lang === 'en' ? 'English' : 'العربية';
+
+        const themeText = document.getElementById('theme-status-text');
+        if (themeText) {
+            themeText.innerText = currentTheme === 'light' ? translations[lang].modeLight : translations[lang].modeDark;
+        }
+    };
+
+    window.toggleLanguage = function() {
+        const newLang = currentLang === 'ar' ? 'en' : 'ar';
+        window.applyLanguage(newLang);
+    };
+
+    // تطبيق الثيم واللغة عند التحميل
+    window.applyTheme(currentTheme);
+    window.applyLanguage(currentLang);
+
+    /* فحص ومراقبة حالة الاتصال بالإنترنت */
+    function checkNetworkConnection() {
+        const banner = document.getElementById('offline-banner');
+        if (!navigator.onLine) {
+            banner.style.display = 'block';
+        } else {
+            banner.style.display = 'none';
+        }
+    }
+
+    window.addEventListener('online', checkNetworkConnection);
+    window.addEventListener('offline', checkNetworkConnection);
+    checkNetworkConnection();
+
+    window.generateNewCaptcha = function() {
+        window.generatedCaptchaCode = Math.floor(1000 + Math.random() * 9000).toString();
+        const displayEl = document.getElementById('captcha-code-display');
+        if(displayEl) displayEl.innerText = window.generatedCaptchaCode;
+        
+        window.generatedForgotCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+        const forgotDisplayEl = document.getElementById('forgot-captcha-display');
+        if(forgotDisplayEl) forgotDisplayEl.innerText = window.generatedForgotCaptcha;
+    };
+
+    window.showLuxuryAlert = function(title, msg) {
+        document.getElementById('luxury-modal-title').innerText = title;
+        document.getElementById('luxury-modal-text').innerText = msg;
+        document.getElementById('luxury-alert-modal').classList.add('active');
+    };
+
+    window.closeLuxuryModal = function() {
+        document.getElementById('luxury-alert-modal').classList.remove('active');
+    };
+
+    /* ========================================================
+       المنطق المباشر: الفحص التلقائي والتوجيه الذكي للمستخدم
+    ======================================================== */
+    window.autoCheckPhoneStatus = function(source) {
+        if (autoCheckTimeout) clearTimeout(autoCheckTimeout);
+        autoCheckTimeout = setTimeout(async () => {
+            const phoneInput = source === 'login' ? document.getElementById('login-phone').value.trim() : document.getElementById('signup-phone').value.trim();
+            const countryCode = source === 'login' ? document.getElementById('login-country-select').value : document.getElementById('signup-country-select').value;
+            
+            if (phoneInput.length >= 8) {
+                const fullPhone = countryCode + phoneInput;
+                const uid = "USER_" + fullPhone.replace(/[^0-9]/g, '');
+                
+                try {
+                    const userDoc = await getDoc(doc(db, "users", uid));
+                    if (userDoc.exists()) {
+                        if (source === 'signup') {
+                            showLuxuryAlert("رقم مسجل", "هذا الرقم مسجل بالفعل! تم توجيهك إلى واجهة تسجيل الدخول.");
+                            document.getElementById('login-phone').value = phoneInput;
+                            document.getElementById('login-country-select').value = countryCode;
+                            showLoginView();
+                        }
+                    } else {
+                        if (source === 'login') {
+                            showLuxuryAlert("رقم جديد", "هذا الرقم غير مسجل سابقاً، تم توجيهك تلقائياً لإنشاء حساب جديد.");
+                            document.getElementById('signup-phone').value = phoneInput;
+                            document.getElementById('signup-country-select').value = countryCode;
+                            showSignupView();
+                        }
+                    }
+                } catch(e) { console.error(e); }
+            }
+        }, 600);
+    };
+
+    window.submitLogin = async function() {
+        const phone = document.getElementById('login-phone').value.trim();
+        const pass = document.getElementById('login-pass').value.trim();
+        if(!phone || !pass) { showLuxuryAlert("تنبيه", "يرجى ملء جميع الحقول المطلوبة!"); return; }
+        
+        const fullPhone = document.getElementById('login-country-select').value + phone;
+        const uid = "USER_" + fullPhone.replace(/[^0-9]/g, '');
+
+        try {
+            const userDoc = await getDoc(doc(db, "users", uid));
+            if (!userDoc.exists()) {
+                showLuxuryAlert("حساب غير موجود", "هذا الرقم جديد وغير مسجل! تم تحويلك تلقائياً لإنشاء حساب.");
+                document.getElementById('signup-phone').value = phone;
+                showSignupView();
+                return;
+            }
+
+            const userData = userDoc.data();
+            if (userData.password && userData.password !== pass) {
+                showLuxuryAlert("كلمة سر خاطئة", "كلمة المرور غير صحيحة! تم توجيهك تلقائياً إلى صفحة نسيت كلمة السر.");
+                document.getElementById('forgot-phone').value = phone;
+                document.getElementById('forgot-country-select').value = document.getElementById('login-country-select').value;
+                showForgotView();
+                return;
+            }
+
+            localStorage.setItem('kashy_logged_user', fullPhone);
+            showLuxuryAlert("تم بنجاح", "تم تسجيل الدخول بنجاح! مرحباً بك.");
+            checkUserAuthSession();
+
+        } catch(e) {
+            console.error(e);
+            showLuxuryAlert("خطأ", "حدث خطأ أثناء الاتصال بالخادم، حاول لاحقاً.");
+        }
+    };
+
+    window.submitSignup = async function() {
+        const phone = document.getElementById('signup-phone').value.trim();
+        const pass = document.getElementById('signup-pass').value.trim();
+        const captcha = document.getElementById('signup-captcha-input').value.trim();
+        const terms = document.getElementById('signup-terms').checked;
+
+        if(!phone || !pass || !captcha) { showLuxuryAlert("تنبيه", "يرجى ملء كافة البيانات!"); return; }
+        if(captcha !== window.generatedCaptchaCode) { showLuxuryAlert("خطأ", "رمز الكابتشا غير صحيح!"); return; }
+        if(!terms) { showLuxuryAlert("تنبيه", "يجب الموافقة على الشروط والأحكام!"); return; }
+
+        const fullPhone = document.getElementById('signup-country-select').value + phone;
+        const uid = "USER_" + fullPhone.replace(/[^0-9]/g, '');
+
+        try {
+            const userDoc = await getDoc(doc(db, "users", uid));
+            if (userDoc.exists()) {
+                showLuxuryAlert("حساب موجود", "هذا الرقم متواجد بالفعل! تم تحويلك لتسجيل الدخول.");
+                document.getElementById('login-phone').value = phone;
+                showLoginView();
+                return;
+            }
+
+            await setDoc(doc(db, "users", uid), {
+                phone: fullPhone,
+                password: pass,
+                uid: uid,
+                createdAt: new Date().toISOString()
+            });
+
+            localStorage.setItem('kashy_logged_user', fullPhone);
+            showLuxuryAlert("تم بنجاح", "تم إنشاء الحساب بنجاح! مرحباً بك في سوق كاشي.");
+            checkUserAuthSession();
+
+        } catch(e) {
+            console.error(e);
+            showLuxuryAlert("خطأ", "فشل في عملية إنشاء الحساب، يرجى المحاولة لاحقاً.");
+        }
+    };
+
+    window.submitForgot = async function() {
+        const phone = document.getElementById('forgot-phone').value.trim();
+        const captcha = document.getElementById('forgot-captcha-input').value.trim();
+        const newPass = document.getElementById('forgot-new-pass').value.trim();
+
+        if(!phone || !captcha || !newPass) { showLuxuryAlert("تنبيه", "يرجى إكمال الحقول!"); return; }
+        if(captcha !== window.generatedForgotCaptcha) { showLuxuryAlert("خطأ", "رمز الكابتشا غير صحيح!"); return; }
+
+        const fullPhone = document.getElementById('forgot-country-select').value + phone;
+        const uid = "USER_" + fullPhone.replace(/[^0-9]/g, '');
+
+        try {
+            const userDoc = await getDoc(doc(db, "users", uid));
+            if (!userDoc.exists()) {
+                showLuxuryAlert("غير موجود", "هذا الرقم غير مسجل لدينا، تم تحويلك لإنشاء حساب جديد.");
+                document.getElementById('signup-phone').value = phone;
+                showSignupView();
+                return;
+            }
+
+            await updateDoc(doc(db, "users", uid), {
+                password: newPass,
+                updatedAt: new Date().toISOString()
+            });
+
+            localStorage.setItem('kashy_logged_user', fullPhone);
+            showLuxuryAlert("تم بنجاح", "تم تحديث كلمة المرور بنجاح وتسجيل الدخول!");
+            checkUserAuthSession();
+
+        } catch(e) {
+            console.error(e);
+            showLuxuryAlert("خطأ", "تعذر تحديث كلمة المرور حالياً.");
+        }
+    };
+
+    window.copyEmailAddress = function(email) {
+        navigator.clipboard.writeText(email).then(() => {
+            showLuxuryAlert("تم النسخ", "تم النسخ بنجاح ✨");
+        }).catch(() => {
+            showLuxuryAlert("تم النسخ", "تم النسخ بنجاح ✨");
+        });
+    };
+
+    window.hideBottomNav = function() {
+        const nav = document.getElementById('bottom-nav-el');
+        if(nav) { nav.style.transform = 'translate(-50%, 150%)'; nav.style.opacity = '0'; }
+    };
+
+    window.showBottomNav = function() {
+        const nav = document.getElementById('bottom-nav-el');
+        if(nav) { nav.style.transform = 'translate(-50%, 0)'; nav.style.opacity = '1'; }
+    };
+
+    window.handleGlobalClick = function(e) {
+        const inputArea = document.getElementById('support-input-bar');
+        if (inputArea && !inputArea.contains(e.target)) {
+            showBottomNav();
+        }
+    };
+
+    window.switchTab = function(pageId, btn) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        btn.classList.add('active');
+
+        if (pageId === 'page-support') {
+            setTimeout(() => {
+                const chatBox = document.getElementById('chat-box');
+                if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+            }, 100);
+        }
+    };
+
+    window.openSubPage = function(pageId) {
+        document.getElementById(pageId).classList.add('open');
+    };
+
+    window.closeSubPage = function(pageId) {
+        document.getElementById(pageId).classList.remove('open');
+    };
+
+    window.showLoginView = function() {
+        document.getElementById('login-view').classList.remove('hidden');
+        document.getElementById('signup-view').classList.add('hidden');
+        document.getElementById('forgot-view').classList.add('hidden');
+    };
+
+    window.showSignupView = function() {
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('signup-view').classList.remove('hidden');
+        document.getElementById('forgot-view').classList.add('hidden');
+        window.generateNewCaptcha();
+    };
+
+    window.showForgotView = function() {
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('signup-view').classList.add('hidden');
+        document.getElementById('forgot-view').classList.remove('hidden');
+        window.generateNewCaptcha();
+    };
+
+    window.togglePasswordVisibility = function(inputId, btn) {
+        const inp = document.getElementById(inputId);
+        if(inp.type === 'password') { inp.type = 'text'; }
+        else { inp.type = 'password'; }
+    };
+
+    window.validatePassword = function(inp) {
+        const val = inp.value;
+        const err = document.getElementById('pass-error');
+        const hasUpper = /[A-Z]/.test(val);
+        const hasNum = /[0-9]/.test(val);
+        const hasSym = /[^A-Za-z0-9]/.test(val);
+        
+        if(val.length > 0 && (!hasUpper || !hasNum || !hasSym)) {
+            err.style.display = 'block';
+        } else {
+            err.style.display = 'none';
+        }
+    };
+
+    window.checkUserAuthSession = function() {
+        const sessionUser = localStorage.getItem('kashy_logged_user');
+        if (sessionUser) {
+            currentUserUid = "USER_" + sessionUser.replace(/[^0-9]/g, '');
+            document.getElementById('profile-phone-display').innerText = `${sessionUser}`;
+            
+            getDoc(doc(db, "users", currentUserUid)).then((docSnap) => {
+                if (!docSnap.exists()) {
+                    setDoc(doc(db, "users", currentUserUid), {
+                        phone: sessionUser,
+                        uid: currentUserUid,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+            }).catch(err => console.error(err));
+
+            listenToOrders();
+            listenToChats();
+            listenToBroadcasts();
+            listenToProductsLive();
+            loadCartData();
+
+            document.getElementById('auth-gate-wrapper').classList.add('hidden');
+            document.getElementById('app-dashboard').classList.remove('hidden');
+            
+            document.getElementById('header-bell-btn').style.display = 'flex';
+            document.getElementById('header-support-btn').style.display = 'flex';
+
+            /* إخفاء الشاشة الترحيبية بعد 10 ثوانٍ */
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if(splash) splash.style.display = 'none';
+                const container = document.getElementById('main-app');
+                if(container) {
+                    container.style.opacity = '1';
+                    container.style.transform = 'scale(1)';
+                }
+            }, 10000);
+        } else {
+            document.getElementById('app-dashboard').classList.add('hidden');
+            document.getElementById('auth-gate-wrapper').classList.remove('hidden');
+            
+            document.getElementById('header-bell-btn').style.display = 'none';
+            document.getElementById('header-support-btn').style.display = 'none';
+
+            /* إخفاء الشاشة الترحيبية بعد 10 ثوانٍ */
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if(splash) splash.style.display = 'none';
+                const container = document.getElementById('main-app');
+                if(container) {
+                    container.style.opacity = '1';
+                    container.style.transform = 'scale(1)';
+                }
+            }, 10000);
+            
+            window.showLoginView();
+        }
+    };
+
+    function listenToProductsLive() {
+        onSnapshot(collection(db, "products"), (snapshot) => {
+            window.allProductsList = [];
+            snapshot.forEach(docSnap => {
+                const p = docSnap.data();
+                p.id = docSnap.id;
+                window.allProductsList.push(p);
+            });
+            renderProducts(window.allProductsList);
+        });
+    }
+
+    function renderProducts(list) {
+        const wrapper = document.getElementById('products-wrapper');
+        wrapper.innerHTML = "";
+        
+        if(list.length === 0) {
+            wrapper.innerHTML = `<div style="grid-column: span 2; text-align:center; padding:20px; color:var(--text-muted);">لا توجد منتجات معروضة حالياً.</div>`;
+            return;
+        }
+
+        list.forEach(prod => {
+            const card = document.createElement('div');
+            card.className = "product-card";
+            const imgUrl = (prod.images && prod.images.length > 0) ? prod.images[0] : 'https://via.placeholder.com/150';
+
+            card.innerHTML = `
+                <img src="${imgUrl}" class="product-img">
+                <div class="product-info">
+                    <h4 class="product-title">${prod.name}</h4>
+                    <p class="product-price">${prod.price} ج.م</p>
+                    <button class="buy-btn" onclick="openCheckoutDirect('${prod.id}')">شراء الآن</button>
+                    <button class="prod-details-btn" onclick="openProductDetailsNew('${prod.id}')">تفاصيل المنتج</button>
+                </div>
+            `;
+            wrapper.appendChild(card);
+        });
+    }
+
+    window.filterCategory = function(catKey) {
+        closeSubPage('sub-categories-list-page');
+        if(catKey === 'all') {
+            renderProducts(window.allProductsList);
+        } else {
+            const filtered = window.allProductsList.filter(p => p.category === catKey);
+            renderProducts(filtered);
+        }
+    };
+
+    window.searchProducts = function(queryText) {
+        const q = queryText.toLowerCase().trim();
+        if(!q) { renderProducts(window.allProductsList); return; }
+        const filtered = window.allProductsList.filter(p => p.name.toLowerCase().includes(q) || (p.desc && p.desc.toLowerCase().includes(q)));
+        renderProducts(filtered);
+    };
+
+    window.openProductDetailsNew = function(prodId) {
+        const prod = window.allProductsList.find(p => p.id === prodId);
+        if(!prod) return;
+
+        document.getElementById('det-prod-name').innerText = prod.name;
+        document.getElementById('det-prod-desc').innerText = prod.desc || "لا يوجد وصف إضافي للمنتج.";
+        document.getElementById('det-prod-price').innerText = prod.price;
+
+        const imgsContainer = document.getElementById('det-prod-images-container');
+        imgsContainer.innerHTML = "";
+        
+        if(prod.images && prod.images.length > 0) {
+            prod.images.forEach(imgSrc => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.onclick = () => openImageViewer(imgSrc, prod.desc);
+                imgsContainer.appendChild(img);
+            });
+        }
+
+        document.getElementById('prod-det-add-cart-btn').onclick = () => addToCart(prod);
+        document.getElementById('prod-det-buy-btn').onclick = () => {
+            closeSubPage('sub-product-details-page');
+            openCheckoutDirect(prod.id);
+        };
+
+        openSubPage('sub-product-details-page');
+    };
+
+    window.openCheckoutDirect = function(prodId) {
+        const prod = window.allProductsList.find(p => p.id === prodId);
+        if(!prod) return;
+        currentSelectedCheckoutItem = prod;
+
+        document.getElementById('checkout-new-name').innerText = prod.name;
+        document.getElementById('checkout-new-price').innerText = prod.price;
+        openSubPage('sub-checkout-new');
+    };
+
+    window.confirmAndSendOrder = async function() {
+        const fullName = document.getElementById('order-user-name').value.trim();
+        const phone = document.getElementById('order-user-phone').value.trim();
+        const address = document.getElementById('order-user-address').value.trim();
+        const phoneOpt = document.getElementById('order-user-phone-opt').value.trim();
+
+        if(!fullName || !phone || !address) {
+            showLuxuryAlert("تنبيه", "يرجى كتابة الاسم ورقم الهاتف والعنوان التفصيلي!");
+            return;
+        }
+
+        if(!currentSelectedCheckoutItem) return;
+
+        await addDoc(collection(db, "orders"), {
+            userId: currentUserUid,
+            productName: currentSelectedCheckoutItem.name,
+            price: currentSelectedCheckoutItem.price,
+            productImg: (currentSelectedCheckoutItem.images && currentSelectedCheckoutItem.images.length > 0) ? currentSelectedCheckoutItem.images[0] : "",
+            fullName,
+            phone,
+            address,
+            phoneOpt,
+            status: "قيد المراجعة والمعالجة ⏳",
+            timestamp: new Date().toISOString()
+        });
+
+        showLuxuryAlert("نجاح الطلب", "تم إرسال طلب الشراء بنجاح! سوف تتواصل معك خدمة العملاء قريباً.");
+        closeSubPage('sub-checkout-new');
+    };
+
+    function listenToOrders() {
+        if(!currentUserUid) return;
+        const q = query(collection(db, "orders"), where("userId", "==", currentUserUid));
+        onSnapshot(q, (snapshot) => {
+            const container = document.getElementById('orders-list-box');
+            container.innerHTML = "";
+            let ordersArr = [];
+            snapshot.forEach(docSnap => {
+                ordersArr.push(docSnap.data());
+            });
+            
+            ordersArr.sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1));
+
+            ordersArr.forEach(order => {
+                const card = document.createElement('div');
+                card.style.cssText = "background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid rgba(150,150,150,0.15); display:flex; gap:12px; align-items:center;";
+                
+                let imgCode = order.productImg ? `<img src="${order.productImg}" style="width:60px; height:60px; object-fit:cover; border-radius:8px;">` : '';
+
+                card.innerHTML = `
+                    ${imgCode}
+                    <div style="display:flex; flex-direction:column; gap:4px;">
+                        <strong>المنتج: ${order.productName}</strong>
+                        <span style="color:var(--neon-blue); font-weight:bold;">السعر: ${order.price} ج.م</span>
+                        <span style="color:var(--gold-color); font-size:12px;">الحالة: ${order.status}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            if(ordersArr.length === 0) {
+                container.innerHTML = `<div style="background:var(--bg-card); padding:15px; border-radius:12px; text-align: center; color: var(--text-muted);" data-i18n="noOrders">${translations[currentLang].noOrders}</div>`;
+            }
+        });
+    }
+
+    function listenToChats() {
+        if (!currentUserUid) return;
+        
+        const q = query(collection(db, "chats"), where("userId", "==", currentUserUid));
+
+        onSnapshot(q, (snapshot) => {
+            const chatBox = document.getElementById('chat-box');
+            if (!chatBox) return;
+
+            let messages = [];
+            let adminIsTyping = false;
+
+            snapshot.forEach((docSnap) => {
+                const chatData = docSnap.data();
+                const msgId = docSnap.id;
+
+                if (chatData.sender === "admin_typing") {
+                    if (chatData.status === "typing") adminIsTyping = true;
+                    return;
+                }
+
+                if (chatData.deletedForUser) return;
+                
+                if (chatData.sender === "admin" && !chatData.seenByUser) {
+                    updateDoc(doc(db, "chats", msgId), { seenByUser: true }).catch(()=>{});
+                }
+
+                messages.push({ id: msgId, ...chatData });
+            });
+
+            messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+            chatBox.innerHTML = `
+                <div class="msg-bubble admin" data-i18n="welcomeSupport">
+                    ${translations[currentLang].welcomeSupport}
+                </div>
+            `;
+
+            messages.forEach((chat) => {
+                const isUser = chat.sender === "user";
+                const msgContent = chat.message || chat.text || "";
+
+                if (!msgContent && chat.type !== "image") return;
+
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `msg-bubble ${isUser ? 'user' : 'admin'}`;
+
+                let timeStr = "";
+                if (chat.timestamp) {
+                    try {
+                        timeStr = new Date(chat.timestamp).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+                    } catch(e){}
+                }
+
+                let tickHtml = "";
+                if (isUser) {
+                    const isSeen = chat.seenByAdmin === true;
+                    tickHtml = `<span class="tick-mark">${isSeen ? '✓✓' : '✓'}</span>`;
+                }
+
+                if (chat.type === "image" || chat.image) {
+                    const imgSrc = chat.message || chat.image;
+                    msgDiv.innerHTML = `
+                        <img src="${imgSrc}" style="max-width:100%; max-height:200px; border-radius:8px; cursor:pointer;" onclick="openImageViewer('${imgSrc}')">
+                        <div class="msg-meta">
+                            <span>${timeStr}</span>
+                            ${tickHtml}
+                        </div>
+                    `;
+                } else {
+                    msgDiv.innerHTML = `
+                        <div>${msgContent}</div>
+                        <div class="msg-meta">
+                            <span>${timeStr}</span>
+                            ${tickHtml}
+                        </div>
+                    `;
+                }
+
+                chatBox.appendChild(msgDiv);
+            });
+
+            const typingEl = document.getElementById('chat-typing-status');
+            if (typingEl) {
+                typingEl.style.display = adminIsTyping ? 'block' : 'none';
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    }
+
+    window.sendChatMessage = async function() {
+        const input = document.getElementById('chat-msg-input');
+        const text = input.value.trim();
+        if (!text || !currentUserUid) return;
+
+        input.value = "";
+
+        await setDoc(doc(db, "chats", "TYPING_USER_" + currentUserUid), {
+            userId: currentUserUid,
+            sender: "user_typing",
+            status: "idle",
+            timestamp: new Date().toISOString()
+        });
+
+        await addDoc(collection(db, "chats"), {
+            userId: currentUserUid,
+            sender: "user",
+            message: text,
+            type: "text",
+            seenByAdmin: false,
+            timestamp: new Date().toISOString()
+        });
+    };
+
+    window.handleKeyPress = function(e) {
+        if (e.key === 'Enter') {
+            sendChatMessage();
+        }
+    };
+
+    window.sendChatImage = async function(fileInput) {
+        if (!fileInput.files || fileInput.files.length === 0 || !currentUserUid) return;
+        const file = fileInput.files[0];
+        try {
+            const base64Img = await toBase64(file);
+
+            await addDoc(collection(db, "chats"), {
+                userId: currentUserUid,
+                sender: "user",
+                message: base64Img,
+                type: "image",
+                seenByAdmin: false,
+                timestamp: new Date().toISOString()
+            });
+        } catch(err) {
+            console.error("خطأ في رفع الصورة:", err);
+            showLuxuryAlert("خطأ", "فشل تحميل الصورة، يرجى اختيار صورة ذات حجم أصغر.");
+        } finally {
+            fileInput.value = "";
+        }
+    };
+
+    window.reportUserTypingStatus = async function() {
+        if (!currentUserUid) return;
+        const typingId = "TYPING_USER_" + currentUserUid;
+        
+        await setDoc(doc(db, "chats", typingId), {
+            userId: currentUserUid,
+            sender: "user_typing",
+            status: "typing",
+            timestamp: new Date().toISOString()
+        });
+
+        if (userTypingTimeout) clearTimeout(userTypingTimeout);
+        userTypingTimeout = setTimeout(async () => {
+            await setDoc(doc(db, "chats", typingId), {
+                userId: currentUserUid,
+                sender: "user_typing",
+                status: "idle",
+                timestamp: new Date().toISOString()
+            });
+        }, 2000);
+    };
+
+    function listenToBroadcasts() {
+        onSnapshot(collection(db, "broadcasts"), (snapshot) => {
+            const list = document.getElementById('broadcasts-container-list');
+            const dot = document.getElementById('bell-unread-dot');
+            list.innerHTML = "";
+            
+            let broadcasts = [];
+            snapshot.forEach(docSnap => {
+                broadcasts.push(docSnap.data());
+            });
+
+            broadcasts.sort((a,b) => (a.timestamp > b.timestamp ? -1 : 1));
+
+            broadcasts.forEach(b => {
+                const card = document.createElement('div');
+                card.className = "broadcast-card-item";
+                
+                let imgHtml = b.image ? `<img src="${b.image}" onclick="openImageViewer('${b.image}')">` : '';
+
+                card.innerHTML = `
+                    <p style="font-weight:bold; font-size:14px;">${b.message}</p>
+                    ${imgHtml}
+                    <span class="broadcast-time">${new Date(b.timestamp).toLocaleString('ar-EG')}</span>
+                `;
+                list.appendChild(card);
+            });
+
+            if (broadcasts.length > 0) {
+                dot.style.display = "block";
+            } else {
+                dot.style.display = "none";
+                list.innerHTML = `<div class="modal-text" style="text-align: center; color: var(--text-muted);">لا توجد إعلانات عامة حالياً.</div>`;
+            }
+        });
+    }
+
+    window.openNotifications = function() {
+        document.getElementById('notifications-modal').classList.add('active');
+        document.getElementById('bell-unread-dot').style.display = "none";
+    };
+
+    window.closeNotifications = function() {
+        document.getElementById('notifications-modal').classList.remove('active');
+    };
+
+    window.openSupport = function() {
+        document.getElementById('support-modal').classList.add('active');
+    };
+
+    window.closeSupport = function() {
+        document.getElementById('support-modal').classList.remove('active');
+    };
+
+    window.askExitDashboard = function() {
+        document.getElementById('logout-confirm-modal').classList.add('active');
+    };
+
+    window.closeLogoutConfirm = function() {
+        document.getElementById('logout-confirm-modal').classList.remove('active');
+    };
+
+    window.confirmExitDashboard = function() {
+        localStorage.removeItem('kashy_logged_user');
+        location.reload();
+    };
+
+    window.openImageViewer = function(src, desc) {
+        document.getElementById('viewer-img').src = src;
+        const descEl = document.getElementById('viewer-desc-text');
+        if(desc) {
+            descEl.innerText = desc;
+            descEl.style.display = "block";
+        } else {
+            descEl.style.display = "none";
+        }
+        document.getElementById('image-viewer-modal').classList.add('active');
+    };
+
+    window.closeImageViewer = function() {
+        document.getElementById('image-viewer-modal').classList.remove('active');
+    };
+
+    window.dismissPopup = function(id) {
+        document.getElementById(id).classList.add('hidden-el');
+    };
+
+    function addToCart(prod) {
+        window.cartItems.push(prod);
+        localStorage.setItem('kashy_cart', JSON.stringify(window.cartItems));
+        renderCartUI();
+        showLuxuryAlert("العربة", "تمت إضافة المنتج إلى عربة التسوق بنجاح!");
+    }
+
+    function loadCartData() {
+        const saved = localStorage.getItem('kashy_cart');
+        if(saved) {
+            try { window.cartItems = JSON.parse(saved); } catch(e) { window.cartItems = []; }
+        }
+        renderCartUI();
+    }
+
+    function renderCartUI() {
+        const container = document.getElementById('cart-items-container');
+        if(!container) return;
+        container.innerHTML = "";
+
+        if(window.cartItems.length === 0) {
+            container.innerHTML = `<div style="background:var(--bg-card); padding:15px; border-radius:12px; text-align: center; color: var(--text-muted);" data-i18n="cartEmpty">${translations[currentLang].cartEmpty}</div>`;
+            return;
+        }
+
+        window.cartItems.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = "cart-item-card";
+            const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'https://via.placeholder.com/150';
+
+            card.innerHTML = `
+                <img src="${imgUrl}" class="cart-item-img">
+                <div class="cart-item-info">
+                    <strong>${item.name}</strong>
+                    <span style="color:var(--neon-blue); font-weight:bold;">${item.price} ج.م</span>
+                    <div class="cart-btn-group">
+                        <button class="cart-buy-btn" onclick="openCheckoutDirect('${item.id}')">شراء</button>
+                        <button class="cart-delete-btn" onclick="removeFromCart(${index})">حذف</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    window.removeFromCart = function(index) {
+        window.cartItems.splice(index, 1);
+        localStorage.setItem('kashy_cart', JSON.stringify(window.cartItems));
+        renderCartUI();
+    };
+
+    window.copyProfilePhone = function() {
+        const txt = document.getElementById('profile-phone-display').innerText;
+        navigator.clipboard.writeText(txt).then(() => {
+            showLuxuryAlert("تم النسخ", "تم نسخ رقم الهاتف بنجاح!");
+        });
+    };
+
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader(); 
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result); 
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    checkUserAuthSession();
+</script>
+</body>
+</html>

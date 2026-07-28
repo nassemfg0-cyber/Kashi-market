@@ -1581,6 +1581,7 @@
                 const chatData = docSnap.data();
                 const msgId = docSnap.id;
 
+                // التغاضي عن إشعارات الكتابة
                 if (chatData.sender === "admin_typing") {
                     if (chatData.status === "typing") adminIsTyping = true;
                     return;
@@ -1588,6 +1589,7 @@
 
                 if (chatData.deletedForUser) return;
                 
+                // تحديث حالة قراءة الأدمن للرسالة
                 if (chatData.sender === "admin" && !chatData.seenByUser) {
                     updateDoc(doc(db, "chats", msgId), { seenByUser: true }).catch(()=>{});
                 }
@@ -1595,8 +1597,10 @@
                 messages.push({ id: msgId, ...chatData });
             });
 
+            // ترتيب الرسائل زمنياً بانتظام (من الأقدم للأحدث)
             messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
+            // تفريغ الصندوق وإعادة البناء بشكل منظم
             chatBox.innerHTML = `
                 <div class="msg-bubble admin" data-i18n="welcomeSupport">
                     ${translations[currentLang].welcomeSupport}
@@ -1610,6 +1614,7 @@
                 if (!msgContent && chat.type !== "image") return;
 
                 const msgDiv = document.createElement('div');
+                // تحديد الطرف: إذا كان user يذهب لليمين، وإذا كان admin يذهب لليسار
                 msgDiv.className = `msg-bubble ${isUser ? 'user' : 'admin'}`;
 
                 let timeStr = "";

@@ -3,6 +3,6 @@
 😎هذا الموقع يستخدم 
 `Firebase` `Firestore` `Firebase Auth` `Cybersecurity` `SSL Encryption`
 للتواصل واتساب 
-+201022915284
+https://wa.me/qr/GIMVVZI6MPWCI1
 للتواصل عبر الجميل 
 nassemfg0@gmail.com

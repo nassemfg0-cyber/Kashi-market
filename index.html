@@ -273,30 +273,6 @@
         @keyframes slowWave { 0% { left: -100%; } 100% { left: 150%; } }
         .action-btn:hover { box-shadow: 0 6px 20px rgba(0, 114, 255, 0.6); transform: translateY(-2px); }
 
-        /* زر الاستكشاف الأصفر */
-        .explore-btn {
-            background: linear-gradient(45deg, #f59e0b, #d97706);
-            border: none;
-            border-radius: 12px;
-            color: #ffffff;
-            cursor: pointer;
-            width: 100%;
-            padding: 13px;
-            font-size: 15px;
-            font-weight: 700;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .explore-btn:hover {
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
-            transform: translateY(-2px);
-        }
-
         .switch-link { text-align: center; margin-top: 15px; font-size: 14px; color: var(--text-muted); }
         .switch-link span { color: #00c6ff; cursor: pointer; text-decoration: underline; font-weight: 600; }
         .forgot-link { display: block; text-align: left; margin-top: 8px; font-size: 12px; color: #ef4444; cursor: pointer; text-decoration: none; }
@@ -397,6 +373,7 @@
             gap: 4px;
             text-align: right;
             transition: 0.2s;
+            text-decoration: none;
         }
         .profile-option-btn:hover {
             border-color: var(--neon-blue);
@@ -547,20 +524,6 @@
     </div>
 </div>
 
-<!-- مودال التنبيه التفاعلي المخصص لتحويل الزائر لصفحة إنشاء الحساب عند الشراء -->
-<div class="modal-overlay" id="guest-buy-prompt-modal">
-    <div class="modal-card luxury-modal">
-        <div class="modal-title" style="color: #f59e0b;">تنبيه هائم 🛒</div>
-        <div class="modal-text" style="font-size: 15px; font-weight: bold; line-height: 1.6;">
-            سوف يتم توجيهك لإنشاء حساب للحصول على المزايا وتأكيد عمليات الشراء والطلبات.
-        </div>
-        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-            <button class="luxury-modal-btn" style="flex:1; background: linear-gradient(45deg, #10b981, #059669);" onclick="redirectToSignupFromGuest()">موافق</button>
-            <button class="modal-close-btn" style="flex:1;" onclick="closeGuestPromptModal()">إلغاء</button>
-        </div>
-    </div>
-</div>
-
 <div class="first-time-popup hidden-el" id="first-shop-popup">
     <div class="popup-card">
         <div class="popup-title">نظام تسوق كاشي الموثوق 🛒</div>
@@ -662,12 +625,6 @@
                 <a class="forgot-link" onclick="showForgotView()">هل نسيت كلمة السر اضغط هنا ؟</a>
             </div>
             <button class="action-btn" id="login-submit-btn" onclick="submitLogin()">الدخول الآن</button>
-            
-            <!-- زر قم باستكشاف المنصة الأصفر المضاف تحت زر الدخول -->
-            <button class="explore-btn" type="button" onclick="explorePlatformAsGuest()">
-                🔍 قم باستكشاف المنصه
-            </button>
-
             <div class="switch-link">ليس لديك حساب بعد؟ <span onclick="showSignupView()">اضغط لإنشاء حساب</span></div>
         </div>
 
@@ -838,6 +795,12 @@
                 </div>
             </div>
 
+            <!-- زرار تنزيل التطبيق المضاف -->
+            <a href="https://www.appcreator24.com/app4140760-3ojmve" target="_blank" class="profile-option-btn" style="border-color: var(--neon-blue); background: rgba(0, 198, 255, 0.08);">
+                <span class="profile-option-title" style="color: var(--neon-blue);">📲 لتنزيل التطبيق وتجربه مميزه اضغط هنا</span>
+                <span class="profile-option-subtitle" style="color: var(--text-muted);">تحميل المباشر للتطبيق</span>
+            </a>
+
             <!-- زرار اختيار الوضع المفضل لديك -->
             <button class="profile-option-btn" onclick="toggleThemeMode()">
                 <span class="profile-option-title" data-i18n="themeBtnTitle">اختيار الوضع المفضل لديك 🌙/☀️</span>
@@ -993,7 +956,6 @@
     const db = getFirestore(app);
 
     let currentUserUid = ""; 
-    window.isGuestUser = false; // متغير للتحقق من وضع الزائر
     window.cartItems = [];
     window.allProductsList = [];
     let currentSelectedCheckoutItem = null;
@@ -1158,54 +1120,6 @@
         document.getElementById('luxury-alert-modal').classList.remove('active');
     };
 
-    /* إدارة مودال الاستكشاف والتحويل لإنشاء حساب */
-    window.promptGuestToSignup = function() {
-        document.getElementById('guest-buy-prompt-modal').classList.add('active');
-    };
-
-    window.closeGuestPromptModal = function() {
-        document.getElementById('guest-buy-prompt-modal').classList.remove('active');
-    };
-
-    window.redirectToSignupFromGuest = function() {
-        window.closeGuestPromptModal();
-        window.isGuestUser = false;
-        
-        // إغلاق أي واجهات فرعية مفتوحة إن وجدت
-        document.querySelectorAll('.sub-page').forEach(el => el.classList.remove('open'));
-        
-        // إخفاء واجهة التطبيق وإظهار واجهة التسجيل
-        document.getElementById('app-dashboard').classList.add('hidden');
-        document.getElementById('auth-gate-wrapper').classList.remove('hidden');
-        
-        document.getElementById('header-bell-btn').style.display = 'none';
-        document.getElementById('header-support-btn').style.display = 'none';
-
-        showSignupView();
-    };
-
-    /* وظيفة زر استكشاف المنصة (وضع الزائر) */
-    window.explorePlatformAsGuest = function() {
-        window.isGuestUser = true;
-        currentUserUid = "";
-
-        // إخفاء بوابات الدخول وإظهار الداشبورد
-        document.getElementById('auth-gate-wrapper').classList.add('hidden');
-        document.getElementById('app-dashboard').classList.remove('hidden');
-
-        document.getElementById('header-bell-btn').style.display = 'flex';
-        document.getElementById('header-support-btn').style.display = 'flex';
-
-        // استدعاء جلب المنتجات والإعلانات للمشاهدة
-        listenToProductsLive();
-        listenToBroadcasts();
-        loadCartData();
-
-        // التوجيه لتبويب التسوق وتحديث بيانات البروفايل للزائر
-        switchTab('page-shop', document.getElementById('nav-btn-shop'));
-        document.getElementById('profile-phone-display').innerText = "زائر استكشافي 👤";
-    };
-
     /* ========================================================
        المنطق المباشر: الفحص التلقائي والتوجيه الذكي للمستخدم
     ======================================================== */
@@ -1267,7 +1181,6 @@
                 return;
             }
 
-            window.isGuestUser = false;
             localStorage.setItem('kashy_logged_user', fullPhone);
             showLuxuryAlert("تم بنجاح", "تم تسجيل الدخول بنجاح! مرحباً بك.");
             checkUserAuthSession();
@@ -1307,7 +1220,6 @@
                 createdAt: new Date().toISOString()
             });
 
-            window.isGuestUser = false;
             localStorage.setItem('kashy_logged_user', fullPhone);
             showLuxuryAlert("تم بنجاح", "تم إنشاء الحساب بنجاح! مرحباً بك في سوق كاشي.");
             checkUserAuthSession();
@@ -1343,7 +1255,6 @@
                 updatedAt: new Date().toISOString()
             });
 
-            window.isGuestUser = false;
             localStorage.setItem('kashy_logged_user', fullPhone);
             showLuxuryAlert("تم بنجاح", "تم تحديث كلمة المرور بنجاح وتسجيل الدخول!");
             checkUserAuthSession();
@@ -1444,7 +1355,6 @@
     window.checkUserAuthSession = function() {
         const sessionUser = localStorage.getItem('kashy_logged_user');
         if (sessionUser) {
-            window.isGuestUser = false;
             currentUserUid = "USER_" + sessionUser.replace(/[^0-9]/g, '');
             document.getElementById('profile-phone-display').innerText = `${sessionUser}`;
             
@@ -1470,7 +1380,7 @@
             document.getElementById('header-bell-btn').style.display = 'flex';
             document.getElementById('header-support-btn').style.display = 'flex';
 
-            /* إخفاء الشاشة الترحيبية بعد 10 ثوانٍ */
+            /* إخفاء الشاشة الترحيبية بعد 6 ثوانٍ */
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) splash.style.display = 'none';
@@ -1479,7 +1389,7 @@
                     container.style.opacity = '1';
                     container.style.transform = 'scale(1)';
                 }
-            }, 10000);
+            }, 6000);
         } else {
             document.getElementById('app-dashboard').classList.add('hidden');
             document.getElementById('auth-gate-wrapper').classList.remove('hidden');
@@ -1487,7 +1397,7 @@
             document.getElementById('header-bell-btn').style.display = 'none';
             document.getElementById('header-support-btn').style.display = 'none';
 
-            /* إخفاء الشاشة الترحيبية بعد 10 ثوانٍ */
+            /* إخفاء الشاشة الترحيبية بعد 6 ثوانٍ */
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) splash.style.display = 'none';
@@ -1496,7 +1406,7 @@
                     container.style.opacity = '1';
                     container.style.transform = 'scale(1)';
                 }
-            }, 10000);
+            }, 6000);
             
             window.showLoginView();
         }
@@ -1588,12 +1498,6 @@
     };
 
     window.openCheckoutDirect = function(prodId) {
-        // التحقق مما إذا كان المستخدم يمارس الاستكشاف كزائر
-        if (window.isGuestUser) {
-            window.promptGuestToSignup();
-            return;
-        }
-
         const prod = window.allProductsList.find(p => p.id === prodId);
         if(!prod) return;
         currentSelectedCheckoutItem = prod;
@@ -1604,11 +1508,6 @@
     };
 
     window.confirmAndSendOrder = async function() {
-        if (window.isGuestUser) {
-            window.promptGuestToSignup();
-            return;
-        }
-
         const fullName = document.getElementById('order-user-name').value.trim();
         const phone = document.getElementById('order-user-phone').value.trim();
         const address = document.getElementById('order-user-address').value.trim();
@@ -1765,11 +1664,6 @@
     }
 
     window.sendChatMessage = async function() {
-        if (window.isGuestUser) {
-            window.promptGuestToSignup();
-            return;
-        }
-
         const input = document.getElementById('chat-msg-input');
         const text = input.value.trim();
         if (!text || !currentUserUid) return;
@@ -1800,11 +1694,6 @@
     };
 
     window.sendChatImage = async function(fileInput) {
-        if (window.isGuestUser) {
-            window.promptGuestToSignup();
-            return;
-        }
-
         if (!fileInput.files || fileInput.files.length === 0 || !currentUserUid) return;
         const file = fileInput.files[0];
         try {
@@ -1935,11 +1824,6 @@
     };
 
     function addToCart(prod) {
-        if (window.isGuestUser) {
-            window.promptGuestToSignup();
-            return;
-        }
-
         window.cartItems.push(prod);
         localStorage.setItem('kashy_cart', JSON.stringify(window.cartItems));
         renderCartUI();

@@ -273,6 +273,16 @@
         @keyframes slowWave { 0% { left: -100%; } 100% { left: 150%; } }
         .action-btn:hover { box-shadow: 0 6px 20px rgba(0, 114, 255, 0.6); transform: translateY(-2px); }
 
+        /* زر استكشف المنصة البرتقالي المميز */
+        .explore-btn {
+            background: linear-gradient(45deg, #ff8c00, #ff4500) !important;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4) !important;
+            margin-top: 10px;
+        }
+        .explore-btn:hover {
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6) !important;
+        }
+
         .switch-link { text-align: center; margin-top: 15px; font-size: 14px; color: var(--text-muted); }
         .switch-link span { color: #00c6ff; cursor: pointer; text-decoration: underline; font-weight: 600; }
         .forgot-link { display: block; text-align: left; margin-top: 8px; font-size: 12px; color: #ef4444; cursor: pointer; text-decoration: none; }
@@ -325,6 +335,7 @@
         .chat-input-area { padding: 8px 10px; border-top: 1px solid rgba(150,150,150,0.15); display: flex; gap: 6px; align-items: center; background: var(--bg-card); position: relative; z-index: 10; width: 100%; flex-shrink: 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.2); }
         .chat-input { flex: 1; background: var(--input-bg); border: 1px solid rgba(150,150,150,0.2); padding: 6px 12px; border-radius: 8px; color: var(--text-color); outline: none; font-size: 13px; height: 38px; transition: 0.2s border-color; }
         .chat-input:focus { border-color: var(--neon-blue); }
+        .chat-input:disabled { opacity: 0.5; cursor: not-allowed; }
         
         .upload-btn { display: flex; align-items: center; justify-content: center; cursor: pointer; width: 38px; height: 38px; background: var(--input-bg); border: 1px solid rgba(150,150,150,0.2); border-radius: 8px; transition: 0.2s; flex-shrink: 0; }
         .upload-btn:hover { border-color: var(--neon-blue); background: rgba(0, 198, 255, 0.1); }
@@ -333,6 +344,7 @@
         
         .send-msg-btn { background: var(--neon-blue); border: none; color: #000; width: 38px; height: 38px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.2s; }
         .send-msg-btn:hover { background: #00b4e6; transform: translateY(-1px); }
+        .send-msg-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .send-msg-btn svg { width: 16px; height: 16px; fill: #000; }
 
         .verified-badge { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; background-color: #1877f2; color: #fff; border-radius: 50%; margin-right: 6px; }
@@ -373,7 +385,6 @@
             gap: 4px;
             text-align: right;
             transition: 0.2s;
-            text-decoration: none;
         }
         .profile-option-btn:hover {
             border-color: var(--neon-blue);
@@ -388,7 +399,45 @@
             font-weight: 600;
         }
 
-        /* شريط التنقل السفلي - تم رفعه وتنسيقه بشكل مميز */
+        /* تنسيق زر تنزيل التطبيق */
+        .download-app-btn {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid var(--green-support);
+            padding: 14px;
+            border-radius: 12px;
+            color: var(--text-color);
+            width: 100%;
+            margin-top: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: right;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        }
+        .download-app-btn:hover {
+            background: rgba(16, 185, 129, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+        }
+        .download-icon-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(16, 185, 129, 0.2);
+            border-radius: 50%;
+        }
+        .download-icon-box svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--green-support);
+            filter: drop-shadow(0 0 4px var(--green-support));
+        }
+
+        /* شريط التنقل السفلي */
         .bottom-nav { 
             position: fixed; 
             bottom: calc(35px + env(safe-area-inset-bottom, 0px)); 
@@ -459,6 +508,12 @@
         @keyframes modalGlowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.3); } 50% { box-shadow: 0 0 35px rgba(0, 198, 255, 0.6); } }
         .luxury-modal-btn { background: linear-gradient(45deg, #00c6ff, #0072ff); color: #fff; font-weight: bold; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
         .luxury-modal-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4); }
+
+        /* نافذة رسالة الشراء الخضراء الأنيقة للزوار */
+        .green-guest-modal { border: 2px solid #10b981 !important; box-shadow: 0 0 25px rgba(16, 185, 129, 0.4) !important; }
+        .green-guest-btn { background: linear-gradient(45deg, #10b981, #059669) !important; color: #fff; font-weight: bold; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .green-guest-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); }
+        .cancel-guest-btn { background: #374151; color: #fff; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
         
         .order-field-label { display: block; font-size: 14px; font-weight: bold; color: var(--text-muted); margin-bottom: 6px; margin-top: 15px; }
         .shop-detail-card { background: var(--bg-card); border-radius: 16px; padding: 25px; border: 1px solid rgba(150, 150, 150, 0.15); margin-top: 20px; line-height: 1.8; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
@@ -521,6 +576,18 @@
         <div class="modal-title" id="luxury-modal-title">تنبيه آمن</div>
         <div class="modal-text" id="luxury-modal-text">تمت العملية بنجاح.</div>
         <button class="luxury-modal-btn" id="luxury-modal-ok-btn" onclick="closeLuxuryModal()">موافق</button>
+    </div>
+</div>
+
+<!-- النافذة الخضراء الجميلة لمنع إجراء أي عملية شحن/شراء بدون حساب -->
+<div class="modal-overlay" id="guest-alert-modal">
+    <div class="modal-card green-guest-modal">
+        <div class="modal-title" style="color: #10b981;">إنشاء حساب جديد 🟢</div>
+        <div class="modal-text">سيتم توجيهك الآن لإنشاء حساب للحصول على الميزات الكاملة والشراء بسهولة.</div>
+        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+            <button class="green-guest-btn" onclick="redirectToSignup()">موافق</button>
+            <button class="cancel-guest-btn" onclick="closeGuestModal()">إلغاء</button>
+        </div>
     </div>
 </div>
 
@@ -625,6 +692,10 @@
                 <a class="forgot-link" onclick="showForgotView()">هل نسيت كلمة السر اضغط هنا ؟</a>
             </div>
             <button class="action-btn" id="login-submit-btn" onclick="submitLogin()">الدخول الآن</button>
+            
+            <!-- زر استكشف المنصة البرتقالي -->
+            <button class="action-btn explore-btn" onclick="explorePlatformDirectly()">🚀 استكشف المنصة</button>
+
             <div class="switch-link">ليس لديك حساب بعد؟ <span onclick="showSignupView()">اضغط لإنشاء حساب</span></div>
         </div>
 
@@ -772,7 +843,7 @@
                 </div>
                 
                 <div class="chat-input-area" id="support-input-bar">
-                    <label class="upload-btn" title="إرفاق صورة">
+                    <label class="upload-btn" id="upload-img-label" title="إرفاق صورة">
                         <svg viewBox="0 0 24 24" style="fill:#00c6ff;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                         <input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="sendChatImage(this)">
                     </label>
@@ -795,11 +866,16 @@
                 </div>
             </div>
 
-            <!-- زرار تنزيل التطبيق المضاف -->
-            <a href="https://www.appcreator24.com/app4140760-3ojmve" target="_blank" class="profile-option-btn" style="border-color: var(--neon-blue); background: rgba(0, 198, 255, 0.08);">
-                <span class="profile-option-title" style="color: var(--neon-blue);">📲 لتنزيل التطبيق وتجربه مميزه اضغط هنا</span>
-                <span class="profile-option-subtitle" style="color: var(--text-muted);">تحميل المباشر للتطبيق</span>
-            </a>
+            <!-- زرار تنزيل التطبيق وتجربة مميزة مع سهم نازل اخضر -->
+            <button class="download-app-btn" onclick="startAppDownload()">
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                    <span class="profile-option-title" data-i18n="downloadAppTitle">تنزيل التطبيق وتجربة مميزة</span>
+                    <span style="font-size:11px; color:var(--text-muted);" data-i18n="downloadAppSub">اضغط للبدء المباشر في تنزيل التطبيق الرسمى</span>
+                </div>
+                <div class="download-icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                </div>
+            </button>
 
             <!-- زرار اختيار الوضع المفضل لديك -->
             <button class="profile-option-btn" onclick="toggleThemeMode()">
@@ -956,6 +1032,7 @@
     const db = getFirestore(app);
 
     let currentUserUid = ""; 
+    let isGuestMode = false;
     window.cartItems = [];
     window.allProductsList = [];
     let currentSelectedCheckoutItem = null;
@@ -965,9 +1042,6 @@
     window.generatedCaptchaCode = "";
     window.generatedForgotCaptcha = "";
 
-    /* ========================================================
-       إدارة الوضع المفضل (الداكن / الفاتح) واللغات
-    ======================================================== */
     const translations = {
         ar: {
             appTitle: "سوق كاشي",
@@ -985,6 +1059,8 @@
             welcomeSupport: "مرحباً بك! فريق خدمة عملاء كاشي متواجد لمساعدتك الآن. أرسل استفسارك.",
             chatPlaceholder: "اكتب مشكلتك هنا...",
             accountTitle: "حسابك",
+            downloadAppTitle: "تنزيل التطبيق وتجربة مميزة",
+            downloadAppSub: "اضغط للبدء المباشر في تنزيل التطبيق الرسمى",
             themeBtnTitle: "اختيار الوضع المفضل لديك 🌙/☀️",
             modeDark: "الداكن",
             modeLight: "الأبيض",
@@ -1012,6 +1088,8 @@
             welcomeSupport: "Welcome! Kashy support team is here to help you. Send your query.",
             chatPlaceholder: "Type your query here...",
             accountTitle: "Your Account",
+            downloadAppTitle: "Download App & Great Experience",
+            downloadAppSub: "Click to start downloading the official app directly",
             themeBtnTitle: "Choose Your Preferred Theme 🌙/☀️",
             modeDark: "Dark Mode",
             modeLight: "Light Mode",
@@ -1082,11 +1160,54 @@
         window.applyLanguage(newLang);
     };
 
-    // تطبيق الثيم واللغة عند التحميل
     window.applyTheme(currentTheme);
     window.applyLanguage(currentLang);
 
-    /* فحص ومراقبة حالة الاتصال بالإنترنت */
+    /* استكشاف المنصة مباشرة كزائر */
+    window.explorePlatformDirectly = function() {
+        isGuestMode = true;
+        currentUserUid = "";
+        
+        document.getElementById('auth-gate-wrapper').classList.add('hidden');
+        document.getElementById('app-dashboard').classList.remove('hidden');
+
+        document.getElementById('header-bell-btn').style.display = 'flex';
+        document.getElementById('header-support-btn').style.display = 'flex';
+
+        listenToProductsLive();
+        listenToBroadcasts();
+    };
+
+    window.checkGuestPurchase = function() {
+        if (isGuestMode || !currentUserUid) {
+            document.getElementById('guest-alert-modal').classList.add('active');
+            return true; 
+        }
+        return false;
+    };
+
+    window.closeGuestModal = function() {
+        document.getElementById('guest-alert-modal').classList.remove('active');
+    };
+
+    window.redirectToSignup = function() {
+        closeGuestModal();
+        document.getElementById('app-dashboard').classList.add('hidden');
+        document.getElementById('auth-gate-wrapper').classList.remove('hidden');
+        showSignupView();
+    };
+
+    window.startAppDownload = function() {
+        const downloadUrl = "https://www.appcreator24.com/app4140760-3ojmve";
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.target = "_blank";
+        a.download = "";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
     function checkNetworkConnection() {
         const banner = document.getElementById('offline-banner');
         if (!navigator.onLine) {
@@ -1120,9 +1241,6 @@
         document.getElementById('luxury-alert-modal').classList.remove('active');
     };
 
-    /* ========================================================
-       المنطق المباشر: الفحص التلقائي والتوجيه الذكي للمستخدم
-    ======================================================== */
     window.autoCheckPhoneStatus = function(source) {
         if (autoCheckTimeout) clearTimeout(autoCheckTimeout);
         autoCheckTimeout = setTimeout(async () => {
@@ -1181,6 +1299,7 @@
                 return;
             }
 
+            isGuestMode = false;
             localStorage.setItem('kashy_logged_user', fullPhone);
             showLuxuryAlert("تم بنجاح", "تم تسجيل الدخول بنجاح! مرحباً بك.");
             checkUserAuthSession();
@@ -1220,6 +1339,7 @@
                 createdAt: new Date().toISOString()
             });
 
+            isGuestMode = false;
             localStorage.setItem('kashy_logged_user', fullPhone);
             showLuxuryAlert("تم بنجاح", "تم إنشاء الحساب بنجاح! مرحباً بك في سوق كاشي.");
             checkUserAuthSession();
@@ -1255,6 +1375,7 @@
                 updatedAt: new Date().toISOString()
             });
 
+            isGuestMode = false;
             localStorage.setItem('kashy_logged_user', fullPhone);
             showLuxuryAlert("تم بنجاح", "تم تحديث كلمة المرور بنجاح وتسجيل الدخول!");
             checkUserAuthSession();
@@ -1355,6 +1476,7 @@
     window.checkUserAuthSession = function() {
         const sessionUser = localStorage.getItem('kashy_logged_user');
         if (sessionUser) {
+            isGuestMode = false;
             currentUserUid = "USER_" + sessionUser.replace(/[^0-9]/g, '');
             document.getElementById('profile-phone-display').innerText = `${sessionUser}`;
             
@@ -1380,7 +1502,6 @@
             document.getElementById('header-bell-btn').style.display = 'flex';
             document.getElementById('header-support-btn').style.display = 'flex';
 
-            /* إخفاء الشاشة الترحيبية بعد 6 ثوانٍ */
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) splash.style.display = 'none';
@@ -1389,7 +1510,7 @@
                     container.style.opacity = '1';
                     container.style.transform = 'scale(1)';
                 }
-            }, 6000);
+            }, 10000);
         } else {
             document.getElementById('app-dashboard').classList.add('hidden');
             document.getElementById('auth-gate-wrapper').classList.remove('hidden');
@@ -1397,7 +1518,6 @@
             document.getElementById('header-bell-btn').style.display = 'none';
             document.getElementById('header-support-btn').style.display = 'none';
 
-            /* إخفاء الشاشة الترحيبية بعد 6 ثوانٍ */
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) splash.style.display = 'none';
@@ -1406,7 +1526,7 @@
                     container.style.opacity = '1';
                     container.style.transform = 'scale(1)';
                 }
-            }, 6000);
+            }, 10000);
             
             window.showLoginView();
         }
@@ -1498,6 +1618,8 @@
     };
 
     window.openCheckoutDirect = function(prodId) {
+        if(checkGuestPurchase()) return;
+
         const prod = window.allProductsList.find(p => p.id === prodId);
         if(!prod) return;
         currentSelectedCheckoutItem = prod;
@@ -1508,6 +1630,8 @@
     };
 
     window.confirmAndSendOrder = async function() {
+        if(checkGuestPurchase()) return;
+
         const fullName = document.getElementById('order-user-name').value.trim();
         const phone = document.getElementById('order-user-phone').value.trim();
         const address = document.getElementById('order-user-address').value.trim();
@@ -1572,6 +1696,26 @@
         });
     }
 
+    /* التحكم التناوبي في صلاحية إرسال الرسائل (رسالة واحدة فقط حتى يرد الأدمن) */
+    function setChatInputsDisabled(disabled) {
+        const input = document.getElementById('chat-msg-input');
+        const btn = document.getElementById('send-chat-btn');
+        const upload = document.getElementById('upload-img-label');
+        if (input) {
+            input.disabled = disabled;
+            if (disabled) {
+                input.placeholder = "انتظر رد الأدمن لإرسال رسالة جديدة...";
+            } else {
+                input.placeholder = translations[currentLang].chatPlaceholder;
+            }
+        }
+        if (btn) btn.disabled = disabled;
+        if (upload) {
+            if (disabled) upload.style.pointerEvents = 'none';
+            else upload.style.pointerEvents = 'auto';
+        }
+    }
+
     function listenToChats() {
         if (!currentUserUid) return;
         
@@ -1603,6 +1747,18 @@
             });
 
             messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+            // التأكد من آخر رسالة لمعرفة الصلاحية
+            if (messages.length > 0) {
+                const lastMsg = messages[messages.length - 1];
+                if (lastMsg.sender === "user") {
+                    setChatInputsDisabled(true); // تجميد الصلاحية حتى يرد الأدمن
+                } else {
+                    setChatInputsDisabled(false); // إعادة الصلاحية للمستخدم
+                }
+            } else {
+                setChatInputsDisabled(false);
+            }
 
             chatBox.innerHTML = `
                 <div class="msg-bubble admin" data-i18n="welcomeSupport">
@@ -1664,6 +1820,8 @@
     }
 
     window.sendChatMessage = async function() {
+        if(checkGuestPurchase()) return;
+
         const input = document.getElementById('chat-msg-input');
         const text = input.value.trim();
         if (!text || !currentUserUid) return;
@@ -1685,6 +1843,8 @@
             seenByAdmin: false,
             timestamp: new Date().toISOString()
         });
+        
+        setChatInputsDisabled(true); // إنهاء الصلاحية فور إرسال الرسالة
     };
 
     window.handleKeyPress = function(e) {
@@ -1693,7 +1853,18 @@
         }
     };
 
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
     window.sendChatImage = async function(fileInput) {
+        if(checkGuestPurchase()) return;
+
         if (!fileInput.files || fileInput.files.length === 0 || !currentUserUid) return;
         const file = fileInput.files[0];
         try {
@@ -1707,6 +1878,7 @@
                 seenByAdmin: false,
                 timestamp: new Date().toISOString()
             });
+            setChatInputsDisabled(true); // إنهاء الصلاحية
         } catch(err) {
             console.error("خطأ في رفع الصورة:", err);
             showLuxuryAlert("خطأ", "فشل تحميل الصورة، يرجى اختيار صورة ذات حجم أصغر.");
@@ -1824,6 +1996,8 @@
     };
 
     function addToCart(prod) {
+        if(checkGuestPurchase()) return;
+
         window.cartItems.push(prod);
         localStorage.setItem('kashy_cart', JSON.stringify(window.cartItems));
         renderCartUI();
@@ -1874,23 +2048,9 @@
         renderCartUI();
     };
 
-    window.copyProfilePhone = function() {
-        const txt = document.getElementById('profile-phone-display').innerText;
-        navigator.clipboard.writeText(txt).then(() => {
-            showLuxuryAlert("تم النسخ", "تم نسخ رقم الهاتف بنجاح!");
-        });
-    };
-
-    function toBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader(); 
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result); 
-            reader.onerror = error => reject(error);
-        });
-    }
-
+    // تشغيل نظام التحقق الأولي
     checkUserAuthSession();
 </script>
+
 </body>
 </html>
